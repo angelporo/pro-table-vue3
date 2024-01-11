@@ -1,6 +1,7 @@
 <template>
   <component
-    :is="column.search?.render ?? `el-${column.search?.el}`"
+    :is="ComponentIns()"
+    ref="comRef"
     v-bind="{ ...handleSearchProps, ...placeholder, searchParam: _searchParam, clearable }"
     v-model.trim="_searchParam[column.search?.key ?? handleProp(column.prop!)]"
     :data="column.search?.el === 'tree-select' ? columnEnum : []"
@@ -23,7 +24,7 @@
 </template>
 
 <script setup lang="ts" name="SearchFormItem">
-import { computed, inject, ref } from "vue";
+import { computed,onMounted, inject, ref, } from "vue";
 import { handleProp } from "@/utils";
 import { ColumnProps } from "@/components/ProTable/interface";
 
@@ -32,6 +33,13 @@ interface SearchFormItem {
   searchParam: { [key: string]: any };
 }
 const props = defineProps<SearchFormItem>();
+
+
+const ComponentIns = () => {
+  return props.column.search?.render ?? `el-${props.column.search?.el}`
+}
+
+
 
 // Re receive SearchParam
 const _searchParam = computed(() => props.searchParam);
@@ -89,4 +97,9 @@ const clearable = computed(() => {
   const search = props.column.search;
   return search?.props?.clearable ?? (search?.defaultValue == null || search?.defaultValue == undefined);
 });
+
+defineExpose({
+  ComponentIns:ComponentIns,
+})
+
 </script>

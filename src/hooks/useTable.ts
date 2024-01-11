@@ -1,4 +1,5 @@
 import { Table } from "./interface";
+import { FormInstance } from "element-plus";
 import { reactive, computed, toRefs } from "vue";
 
 /**
@@ -13,7 +14,7 @@ export const useTable = (
   initParam: object = {},
   isPageable: boolean = true,
   dataCallBack?: (data: any) => any,
-  requestError?: (error: any) => void
+  requestError?: (error: any) => void,
 ) => {
   const state = reactive<Table.StateProps>({
     // 表格数据
@@ -56,7 +57,7 @@ export const useTable = (
    * */
   const getTableList = async () => {
     if (!api) {
-      console.log('未传递接口api')
+      console.log("未传递接口api");
       return;
     }
     try {
@@ -64,7 +65,7 @@ export const useTable = (
       Object.assign(
         state.totalParam,
         initParam,
-        isPageable ? pageParam.value : {}
+        isPageable ? pageParam.value : {},
       );
       let { data } = await api({
         ...state.searchInitParam,
@@ -104,7 +105,7 @@ export const useTable = (
     Object.assign(
       state.totalParam,
       nowSearchParam,
-      isPageable ? pageParam.value : {}
+      isPageable ? pageParam.value : {},
     );
   };
 
@@ -114,7 +115,12 @@ export const useTable = (
    * @return void
    * */
   const updatePageable = (pageable: Table.Pageable) => {
-    if(pageable.pageNum === undefined || pageable.pageSize === undefined || pageable.total === undefined) return;
+    if (
+      pageable.pageNum === undefined ||
+        pageable.pageSize === undefined ||
+        pageable.total === undefined
+    )
+      return;
     Object.assign(state.pageable, pageable);
   };
 
@@ -122,10 +128,20 @@ export const useTable = (
    * @description 表格数据查询
    * @return void
    * */
-  const search = () => {
-    state.pageable.pageNum = 1;
-    updatedTotalParam();
-    getTableList();
+  const search = (formEl: FormInstance | undefined) => {
+    console.log("formEl",formEl)
+    if (!formEl) return;
+    formEl.validate((valid) => {
+      if (valid) {
+        console.log("submit!",valid);
+        state.pageable.pageNum = 1;
+        updatedTotalParam();
+        getTableList();
+      } else {
+        console.log("error submit!");
+        return false;
+      }
+    });
   };
 
   /**
