@@ -52,8 +52,8 @@ const style = computed(() => {
   let offset = props[breakPoint.value]?.offset ?? props.offset;
   if (props.suffix) {
     return {
-      //当suffix为true时，该元素占用的网格列开始于第cols.value - span - offset + 1列，结束于第span + offset列
-      gridColumnStart: cols.value - span - offset + 1,//起始位置
+      //当 suffix 为 true 时，该元素占用的网格列开始于第cols.value - span - offset + 1列，结束于第 span + offset列
+      gridColumnStart:  cols.value - span - offset + 1,//起始位置
       gridColumnEnd: `span ${span + offset}`,//结束位置
       marginLeft: offset !== 0 ? `calc(((100% + ${gap}px) / ${span + offset}) * ${offset})` : "unset"
     };

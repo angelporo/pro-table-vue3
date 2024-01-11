@@ -72,7 +72,7 @@ const props = withDefaults(defineProps<ProTableProps>(), {
 // 获取响应式设置
 const getResponsive = (item: ColumnProps) => {
   return {
-    span: item.search?.span,
+    span:  item.search?.span,
     offset: item.search?.offset ?? 0,
     xs: item.search?.xs,
     sm: item.search?.sm,
@@ -103,7 +103,7 @@ const showCollapse = computed(() => {
       (current.search![breakPoint.value]?.span ?? current.search?.span ?? 1) +
       (current.search![breakPoint.value]?.offset ??
         current.search?.offset ??
-        0);
+       0);
     if (typeof props.searchCol !== "number") {
       if (prev >= props.searchCol[breakPoint.value]) show = true;
     } else {

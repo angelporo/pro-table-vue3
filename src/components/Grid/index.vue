@@ -32,10 +32,11 @@ const props = withDefaults(defineProps<Props>(), {
   cols: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }),
   collapsed: false,
   collapsedRows: 1,
-  gap: 0
+  gap: 0,
 });
 
 onBeforeMount(() => props.collapsed && findIndex());
+
 onMounted(() => {
   resize({ target: { innerWidth: window.innerWidth } } as unknown as UIEvent);
   window.addEventListener("resize", resize);
@@ -119,7 +120,7 @@ const findIndex = () => {
       prev +=
         ((current as VNode)!.props![breakPoint.value]?.span ?? (current as VNode)!.props?.span ?? 1) +
         ((current as VNode)!.props![breakPoint.value]?.offset ?? (current as VNode)!.props?.offset ?? 0);
-      if (Number(prev) > props.collapsedRows * gridCols.value - suffixCols) {
+      if (Number(prev) >= props.collapsedRows * gridCols.value - suffixCols) {
         hiddenIndex.value = index; // 将需要隐藏的表单字段索引赋值给 hiddenIndex.value
         find = true; // 将 find 变量的值设置为 true
         throw "find it"; // 抛出异常，跳出 reduce 循环

@@ -73,11 +73,15 @@ const dataCallback = (data: any) => {
 // 如果你想在请求之前对当前请求参数做一些操作，可以自定义如下函数：params 为当前所有的请求参数（包括分页），最后返回请求列表接口
 // 默认不做操作就直接在 ProTable 组件上绑定	:requestApi="getUserList"
 const getTableList = (params: any) => {
-  let newParams = JSON.parse(JSON.stringify(params));
-  newParams.createTime && (newParams.startTime = newParams.createTime[0]);
-  newParams.createTime && (newParams.endTime = newParams.createTime[1]);
-  delete newParams.createTime;
-  return getUserList(newParams);
+  try {
+    let newParams = JSON.parse(JSON.stringify(params));
+    newParams.createTime && (newParams.startTime = newParams.createTime[0]);
+    newParams.createTime && (newParams.endTime = newParams.createTime[1]);
+    delete newParams.createTime;
+    return getUserList(newParams);
+  } catch (err) {
+  } finally {
+  }
 };
 
 const shouldUpdate = (newObj, oldObj) => {
@@ -91,7 +95,7 @@ const shouldUpdate = (newObj, oldObj) => {
 const columns: ColumnProps<ResUserList>[] = [
   { type: "selection", fixed: "left", width: 50 },
   { type: "index", label: "#", width: 50 },
-  { type: "expand", label: "Expand", width: 100 },
+  { type: "expand", label: "", width: 100 },
   {
     prop: "username",
     label: "用户姓名",
@@ -138,10 +142,7 @@ const columns: ColumnProps<ResUserList>[] = [
     search: {
       render: ({ searchParam }) => {
         return (
-          <el-input
-            vModel_trim={searchParam.testCol}
-            placeholder="添加嵌套逻辑"
-          />
+          <el-input vModel_trim={searchParam.age} placeholder="添加嵌套逻辑" />
         );
       },
     },
@@ -250,6 +251,10 @@ const selectedData = (selectedData: any) => {
   // ElMessage.success('选中数据', selectedData)
   console.log(selectedData);
 };
+
+const expandChange = (row) => {
+  console.log("row", row);
+};
 </script>
 
 <template>
@@ -262,6 +267,7 @@ const selectedData = (selectedData: any) => {
       :init-param="initParam"
       :data-callback="dataCallback"
       :shouldUpdate="shouldUpdate"
+      @expand-change="expandChange"
     >
       <!-- 表格 header 按钮 -->
       <template #tableHeader="scope">
