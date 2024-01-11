@@ -61,7 +61,7 @@
 
 目前支持的组件：
 
-el-input, el-input-number, el-select, el-select-v2, el-tree-select, el-cascader, 
+el-input, el-input-number, el-select, el-select-v2, el-tree-select, el-cascader,
 
 el-date-picker, el-time-picker, el-switch, el-slider
 
@@ -383,6 +383,77 @@ const deleteAccount = (row: any) => {
 </template>
 ```
 
+**关于逻辑渲染搜索条件和rules 匹配功能**
+
+```
+  {
+    prop: "gender",
+    label: "性别",
+    // 字典数据
+    // enum: genderType,
+    // 字典请求不带参数
+    rules: [
+      {
+        required: true,
+        message: "age is required",
+        trigger: ["blur", "change"],
+      },
+    ],
+    enum: [
+      { genderLabel: "男", genderValue: 1 },
+      { genderLabel: "女", genderValue: 2 },
+    ],
+    // 字典请求携带参数
+    // enum: () => getUserGender({ id: 1 }),
+    search: { el: "select", props: { filterable: true } },
+    fieldNames: { label: "genderLabel", value: "genderValue" },
+  },
+  {
+    // 多级 prop
+    prop: "user.detail.age",
+    label: "年龄",
+    search: {
+      render: ({ searchParam }) => {
+        return (
+          <el-input
+            vModel_trim={searchParam.testCol}
+            placeholder="添加嵌套逻辑"
+          />
+        );
+      },
+    },
+    columns: ({ searchParam }) => {
+      if (searchParam?.gender == 1) {
+        return [
+          {
+            prop: "user234",
+            label: "测试嵌套",
+            rules: [
+              {
+                required: true,
+                message: "qmtc is required",
+                trigger: ["blur", "change"],
+              },
+            ],
+            search: {
+              // 自定义 search 显示内容
+              render: (params) => {
+                const { searchParam } = params;
+                return (
+                  <el-input
+                    vModel_trim={searchParam.user234}
+                    placeholder="添加嵌套逻辑"
+                  />
+                );
+              },
+            },
+          },
+        ];
+      }
+      return [];
+    },
+  },
+```
 
 
 **关于跨页勾选数据**
@@ -444,7 +515,7 @@ const columns = [
       {{ scope.row.createTime }}
    </el-button>
  </template>
- 
+
  // tsx语法
 const columns = [
  	{
@@ -476,7 +547,7 @@ const columns = [
 <template>
     <el-table
       ref="tableRef"
-      v-bind="$attrs" 
+      v-bind="$attrs"
     >
     </el-table>
 </template>
@@ -490,6 +561,3 @@ const tableRef = ref<InstanceType<typeof ElTable>>();
 defineExpose({ element: tableRef });
 </script>
 ```
-
-
-
