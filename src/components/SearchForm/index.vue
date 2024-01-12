@@ -23,7 +23,7 @@
         </GridItem>
         <GridItem suffix>
           <div class="operation">
-            <el-button type="primary" :icon="Search" @click="submitSearch">
+            <el-button :loading="loadingVisible" type="primary" :icon="Search" @click="submitSearch">
               搜索
             </el-button>
             <el-button :icon="Delete" @click="reset"> 重置 </el-button>
@@ -47,7 +47,7 @@
 </template>
 
 <script setup lang="tsx" name="SearchForm">
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref,toRef } from "vue";
 import { ColumnProps } from "@/components/ProTable/interface";
 import { BreakPoint } from "@/components/Grid/interface";
 import { Delete, Search, ArrowDown, ArrowUp } from "@element-plus/icons-vue";
@@ -55,8 +55,14 @@ import SearchFormItem from "./components/SearchFormItem.vue";
 import Grid from "../Grid/index.vue";
 import GridItem from "../Grid/components/GridItem.vue";
 
+onMounted(() => {
+  console.log("11111111111111111111",formRef)
+})
+
+
 interface ProTableProps {
   columns?: ColumnProps[]; // 搜索配置列
+  loadingVisible:boolean;
   searchParam?: { [key: string]: any }; // 搜索参数
   searchCol: number | Record<BreakPoint, number>;
   search: (params: any) => void; // 搜索方法
@@ -65,6 +71,7 @@ interface ProTableProps {
 // 默认值
 const props = withDefaults(defineProps<ProTableProps>(), {
   columns: () => [],
+  loadingVisible:false,
   searchParam: () => ({}),
   search: () => {},
 });
@@ -92,8 +99,13 @@ const breakPoint = computed<BreakPoint>(() => gridRef.value?.breakPoint);
 const formRef = ref();
 
 const submitSearch = () => {
+  console.log("loadingVisible",props.loadingVisible)
   props.search(formRef.value);
 };
+
+defineExpose({
+  submitSearch,
+})
 
 // 判断是否显示 展开/合并 按钮
 const showCollapse = computed(() => {
@@ -101,9 +113,9 @@ const showCollapse = computed(() => {
   props.columns.reduce((prev, current) => {
     prev +=
       (current.search![breakPoint.value]?.span ?? current.search?.span ?? 1) +
-      (current.search![breakPoint.value]?.offset ??
-        current.search?.offset ??
-       0);
+        (current.search![breakPoint.value]?.offset ??
+         current.search?.offset ??
+         0);
     if (typeof props.searchCol !== "number") {
       if (prev >= props.searchCol[breakPoint.value]) show = true;
     } else {
@@ -113,4 +125,6 @@ const showCollapse = computed(() => {
   }, 0);
   return show;
 });
+
+
 </script>

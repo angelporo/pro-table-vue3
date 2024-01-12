@@ -29,4 +29,7 @@ declare module 'vue' {
     TableColumn: typeof import('./src/components/ProTable/components/TableColumn.vue')['default']
     Test: typeof import('./src/components/Grid/test.vue')['default']
   }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
+  }
 }

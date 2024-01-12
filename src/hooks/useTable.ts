@@ -34,6 +34,7 @@ export const useTable = (
     searchInitParam: {},
     // 总参数(包含分页和查询参数)
     totalParam: {},
+    loadingVisible:false,
   });
 
   /**
@@ -67,6 +68,7 @@ export const useTable = (
         initParam,
         isPageable ? pageParam.value : {},
       );
+      state.loadingVisible = true
       let { data } = await api({
         ...state.searchInitParam,
         ...state.totalParam,
@@ -80,7 +82,12 @@ export const useTable = (
       }
     } catch (error) {
       requestError && requestError(error);
+    }finally {
+      state.loadingVisible = false
     }
+
+
+
   };
 
   /**

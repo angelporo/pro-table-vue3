@@ -4,6 +4,8 @@
     v-show="isShowSearch"
     :search="search"
     :reset="reset"
+    :loadingVisible="loadingVisible"
+    ref="searchRef"
     :columns="searchColumns"
     :search-param="searchParam"
     :search-col="searchCol"
@@ -24,7 +26,7 @@
       </div>
       <div v-if="toolButton" class="header-button-ri">
         <slot name="toolButton">
-          <el-button :icon="Refresh" circle @click="getTableList" />
+          <el-button :icon="Refresh" circle @click="searchRef?.submitSearch" />
           <el-button
             v-if="columns.length"
             :icon="Operation"
@@ -47,6 +49,7 @@
       :data="data ?? tableData"
       :border="border"
       :row-key="rowKey"
+      v-loading="loadingVisible"
       @selection-change="selectionChange"
     >
       <!-- 默认插槽 -->
@@ -160,6 +163,13 @@ const tableRef = ref<InstanceType<typeof ElTable>>();
 // 表格多选 Hooks
 const { selectionChange, selectedList, selectedListIds, isSelected } =
   useSelection(props.rowKey);
+const searchRef = ref();
+
+const handleSearch = () => {
+  console.log("ok",searchRef.value)
+}
+
+
 
 // 表格操作 Hooks
 const tableProps = useTable(
@@ -175,6 +185,7 @@ const {
   searchParam,
   searchInitParam,
   getTableList,
+  loadingVisible,
   search,
   reset,
   handleSizeChange,
