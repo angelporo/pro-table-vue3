@@ -17,13 +17,19 @@
             :rules="item?.rules"
             :label="`${item.label} :`"
             :prop="item.prop"
+            label-width="100px"
           >
             <SearchFormItem :column="item" :search-param="searchParam" />
           </el-form-item>
         </GridItem>
         <GridItem suffix>
           <div class="operation">
-            <el-button :loading="loadingVisible" type="primary" :icon="Search" @click="submitSearch">
+            <el-button
+              :loading="loadingVisible"
+              type="primary"
+              :icon="Search"
+              @click="submitSearch"
+            >
               搜索
             </el-button>
             <el-button :icon="Delete" @click="reset"> 重置 </el-button>
@@ -47,7 +53,7 @@
 </template>
 
 <script setup lang="tsx" name="SearchForm">
-import { computed, onMounted, ref,toRef } from "vue";
+import { computed, onMounted, ref, toRef } from "vue";
 import { ColumnProps } from "@/components/ProTable/interface";
 import { BreakPoint } from "@/components/Grid/interface";
 import { Delete, Search, ArrowDown, ArrowUp } from "@element-plus/icons-vue";
@@ -56,13 +62,12 @@ import Grid from "../Grid/index.vue";
 import GridItem from "../Grid/components/GridItem.vue";
 
 onMounted(() => {
-  console.log("11111111111111111111",formRef)
-})
-
+  console.log("11111111111111111111", formRef);
+});
 
 interface ProTableProps {
   columns?: ColumnProps[]; // 搜索配置列
-  loadingVisible:boolean;
+  loadingVisible: boolean;
   searchParam?: { [key: string]: any }; // 搜索参数
   searchCol: number | Record<BreakPoint, number>;
   search: (params: any) => void; // 搜索方法
@@ -71,7 +76,7 @@ interface ProTableProps {
 // 默认值
 const props = withDefaults(defineProps<ProTableProps>(), {
   columns: () => [],
-  loadingVisible:false,
+  loadingVisible: false,
   searchParam: () => ({}),
   search: () => {},
 });
@@ -79,7 +84,7 @@ const props = withDefaults(defineProps<ProTableProps>(), {
 // 获取响应式设置
 const getResponsive = (item: ColumnProps) => {
   return {
-    span:  item.search?.span,
+    span: item.search?.span,
     offset: item.search?.offset ?? 0,
     xs: item.search?.xs,
     sm: item.search?.sm,
@@ -99,13 +104,13 @@ const breakPoint = computed<BreakPoint>(() => gridRef.value?.breakPoint);
 const formRef = ref();
 
 const submitSearch = () => {
-  console.log("loadingVisible",props.loadingVisible)
+  console.log("loadingVisible", props.loadingVisible);
   props.search(formRef.value);
 };
 
 defineExpose({
   submitSearch,
-})
+});
 
 // 判断是否显示 展开/合并 按钮
 const showCollapse = computed(() => {
@@ -113,9 +118,9 @@ const showCollapse = computed(() => {
   props.columns.reduce((prev, current) => {
     prev +=
       (current.search![breakPoint.value]?.span ?? current.search?.span ?? 1) +
-        (current.search![breakPoint.value]?.offset ??
-         current.search?.offset ??
-         0);
+      (current.search![breakPoint.value]?.offset ??
+        current.search?.offset ??
+        0);
     if (typeof props.searchCol !== "number") {
       if (prev >= props.searchCol[breakPoint.value]) show = true;
     } else {

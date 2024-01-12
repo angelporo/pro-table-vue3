@@ -10,6 +10,10 @@
         <el-table-column v-slot="scope" prop="sortable" align="center" label="排序">
           <el-switch :disabled="!scope.row.isTableSort" v-model="scope.row.sortable"></el-switch>
         </el-table-column>
+        <el-table-column v-slot="scope" prop="sortable" align="center" label="冻结列">
+          <el-switch v-model="scope.row.fixed"></el-switch>
+        </el-table-column>
+
         <template #empty>
           <div class="table-empty">
             <img src="@/assets/images/notData.png" alt="notData" />

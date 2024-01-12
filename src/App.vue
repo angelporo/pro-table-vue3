@@ -98,6 +98,7 @@ const columns: ColumnProps<ResUserList>[] = [
   { type: "expand", label: "", width: 100 },
   {
     prop: "username",
+    fixed: "left",
     label: "用户姓名",
     search: { el: "input" },
     render: (scope) => {
@@ -180,7 +181,12 @@ const columns: ColumnProps<ResUserList>[] = [
   {
     prop: "idCard",
     label: "身份证号",
-    search: { el: "input" },
+    search: {
+      el: "input",
+      prop: {
+        "label-width": "200px",
+      },
+    },
     isTableSort: false,
   },
   { prop: "email", label: "邮箱" },

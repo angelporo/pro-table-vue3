@@ -224,10 +224,11 @@ const flatColumnsFunc = (
     if (col._children?.length) flatArr.push(...flatColumnsFunc(col._children));
     flatArr.push(col);
 
-    // 给每一项 column 添加 isShow && isFilterEnum 默认属性
+    //NOTE: 给每一项 column 添加 isShow && isFilterEnum 默认属性
     col.isShow = col.isShow ?? true;
     col.isFilterEnum = col.isFilterEnum ?? true;
     col.isTableSort = col.isTableSort ?? true;
+    col.fixed = col.fixed ?? false;
 
     // 设置 enumMap
     setEnumMap(col);
