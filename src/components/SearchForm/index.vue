@@ -125,6 +125,4 @@ const showCollapse = computed(() => {
   }, 0);
   return show;
 });
-
-
 </script>

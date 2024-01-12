@@ -227,6 +227,7 @@ const flatColumnsFunc = (
     // 给每一项 column 添加 isShow && isFilterEnum 默认属性
     col.isShow = col.isShow ?? true;
     col.isFilterEnum = col.isFilterEnum ?? true;
+    col.isTableSort = col.isTableSort ?? true;
 
     // 设置 enumMap
     setEnumMap(col);

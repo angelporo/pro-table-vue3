@@ -177,7 +177,12 @@ const columns: ColumnProps<ResUserList>[] = [
       return [];
     },
   },
-  { prop: "idCard", label: "身份证号", search: { el: "input" } },
+  {
+    prop: "idCard",
+    label: "身份证号",
+    search: { el: "input" },
+    isTableSort: false,
+  },
   { prop: "email", label: "邮箱" },
   { prop: "address", label: "居住地址" },
   {

@@ -47,6 +47,8 @@
 | ------------ | ------------------ | -------- | ------ | ------------------------------------------------------------ |
 | tag          | Boolean            | ❌        | false  | 当前单元格值是否为标签展示，可通过 enum 数据中 tagType 字段指定 tag 类型 |
 | isShow       | Boolean            | ❌        | true   | 当前列是否显示在表格内(只对 prop 列生效)                     |
+| isTableSort       | Boolean            | ❌        | true   | 当前列是否支持排序功能(只对 prop 列生效)                     |
+
 | search       | SearchProps        | ❌        | —      | 搜索项配置，详情见 Search 配置                               |
 | enum         | Object \| Function | ❌        | —      | 字典，可格式化单元格内容，还可以作为搜索框的下拉选项（字典可以为 API 请求函数，内部会自动执行） |
 | isFilterEnum | Boolean            | ❌        | true   | 当前单元格值是否根据 enum 格式化（例如 enum 只作为搜索项数据，不参与内容格式化） |
