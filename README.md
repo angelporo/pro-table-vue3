@@ -566,3 +566,9 @@ const tableRef = ref<InstanceType<typeof ElTable>>();
 defineExpose({ element: tableRef });
 </script>
 ```
+
+
+
+## TODO
+    - 刷选条件自定义
+    - `prop item fixed` 功能添加左右选择能力
