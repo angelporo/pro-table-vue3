@@ -6,7 +6,6 @@
  */
 import { App, Plugin } from 'vue';
 import {ProTablePlugin} from "packages/ProTable";
-import {useProTable} from "packages/ProTable";
 
 // import SearchForm from "./SearchForm/index.vue";
 // import Grid from "./Grid/index.vue";
