@@ -2,7 +2,7 @@
   "name": "@angel_pro/components-vue3",
   "private": false,
   "description": "智运vue3组件抽离",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "type": "module",
   "scripts": {
     "start:dev": "vite --config ./build/base.config.ts",
