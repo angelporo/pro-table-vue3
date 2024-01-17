@@ -6,6 +6,7 @@
  */
 import { App, Plugin } from 'vue';
 import {ProTablePlugin} from "packages/ProTable";
+import {useProTable} from "packages/ProTable";
 
 // import SearchForm from "./SearchForm/index.vue";
 // import Grid from "./Grid/index.vue";
@@ -17,4 +18,6 @@ const SdVue3Components: Plugin<any[]> = {
 };
 
 export default SdVue3Components;
-export * from "./ProTable"
+export * from "./ProTable";
+export * from "@/hooks/useTable";
+export * from "@/hooks/useSelection"

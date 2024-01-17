@@ -7,8 +7,7 @@
   "scripts": {
     "start:dev": "vite --config ./build/base.config.ts",
     "build-lib": "vite build --config ./build/lib.config.ts",
-    "dev": "vite",
-    "build-tsc": "vue-tsc --noEmit && vite build",
+    "build-tsc": "vue-tsc --noEmit && vite build --config ./build/base.config.ts",
     "patch": "npm version patch -m 'build-lib: release 0.0.1'",
     "preview": "vite preview",
     "test": "vitest",

@@ -2,6 +2,14 @@ import { Table } from "./interface";
 import { FormInstance } from "element-plus";
 import { reactive, computed, toRefs } from "vue";
 
+type useTableProps = {
+  api?: (params: any) => Promise<any>;
+  initParam: {};
+  isPageable: boolean;
+  dataCallBack?: (data: any) => any;
+  requestError?: (error: any) => void;
+};
+
 /**
  * @description table 页面操作方法封装
  * @param {Function} api 获取表格数据 api 方法 (必传)
@@ -9,13 +17,15 @@ import { reactive, computed, toRefs } from "vue";
  * @param {Boolean} isPageable 是否有分页 (非必传，默认为true)
  * @param {Function} dataCallBack 对后台返回的数据进行处理的方法 (非必传)
  * */
-export const useTable = (
-  api?: (params: any) => Promise<any>,
-  initParam: object = {},
-  isPageable: boolean = true,
-  dataCallBack?: (data: any) => any,
-  requestError?: (error: any) => void,
-) => {
+export const useProTable = (options: useTableProps) => {
+  const {
+    api,
+    initParam,
+    isPageable = true,
+    dataCallBack,
+    requestError,
+  } = options;
+
   const state = reactive<Table.StateProps>({
     // 表格数据
     tableData: [],
@@ -34,7 +44,7 @@ export const useTable = (
     searchInitParam: {},
     // 总参数(包含分页和查询参数)
     totalParam: {},
-    loadingVisible:false,
+    loadingVisible: false,
   });
 
   /**
@@ -68,7 +78,7 @@ export const useTable = (
         initParam,
         isPageable ? pageParam.value : {},
       );
-      state.loadingVisible = true
+      state.loadingVisible = true;
       let { data } = await api({
         ...state.searchInitParam,
         ...state.totalParam,
@@ -82,12 +92,9 @@ export const useTable = (
       }
     } catch (error) {
       requestError && requestError(error);
-    }finally {
-      state.loadingVisible = false
+    } finally {
+      state.loadingVisible = false;
     }
-
-
-
   };
 
   /**
@@ -136,11 +143,11 @@ export const useTable = (
    * @return void
    * */
   const search = (formEl: FormInstance | undefined) => {
-    console.log("formEl",formEl)
+    console.log("formEl", formEl);
     if (!formEl) return;
     formEl.validate((valid) => {
       if (valid) {
-        console.log("submit!",valid);
+        console.log("submit!", valid);
         state.pageable.pageNum = 1;
         updatedTotalParam();
         getTableList();

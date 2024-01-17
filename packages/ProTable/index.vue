@@ -112,7 +112,7 @@
 <script setup lang="ts" name="ProTable">
 import { ref, computed, watch, provide, onMounted } from "vue";
 import { ElTable } from "element-plus";
-import { useTable } from "@/hooks/useTable";
+import { useProTable } from "@/hooks/useTable";
 import { useSelection } from "@/hooks/useSelection";
 import { BreakPoint } from "packages/Grid/interface";
 import { isFunction } from "lodash";
@@ -165,20 +165,14 @@ const { selectionChange, selectedList, selectedListIds, isSelected } =
   useSelection(props.rowKey);
 const searchRef = ref();
 
-const handleSearch = () => {
-  console.log("ok",searchRef.value)
-}
-
-
-
 // 表格操作 Hooks
-const tableProps = useTable(
-  props.requestApi,
-  props.initParam,
-  props.pagination,
-  props.dataCallback,
-  props.requestError,
-);
+const tableProps = useProTable({
+  api: props.requestApi,
+  initParam: props.initParam,
+  isPageable: props.pagination,
+  dataCallBack: props.dataCallback,
+  requestError: props.requestError,
+});
 const {
   tableData,
   pageable,
@@ -248,7 +242,9 @@ const initSearchCol = flatColumns.value.filter?.(
   (item) => item.search?.el || item.search?.render,
 );
 
-const searchParamsObj = computed(() => JSON.parse(JSON.stringify(searchParam.value)))
+const searchParamsObj = computed(() =>
+  JSON.parse(JSON.stringify(searchParam.value)),
+);
 
 watch(
   searchParamsObj,
@@ -298,8 +294,8 @@ const colRef = ref();
 const colSetting = tableColumns.value!.filter(
   (item) =>
     !["selection", "index", "expand"].includes(item.type!) &&
-         item.prop !== "operation" &&
-         item.isShow,
+    item.prop !== "operation" &&
+    item.isShow,
 );
 console.log("colSetting", colSetting);
 const openColSetting = () => colRef.value.openColSetting();
@@ -323,7 +319,6 @@ defineExpose({
   selectedListIds,
 });
 </script>
-
 
 <style lang="less">
 /* 表格 pagination 样式 */
@@ -374,8 +369,8 @@ defineExpose({
       justify-content: center;
       align-items: center;
       line-height: 30px;
-      img{
-        width:60px;
+      img {
+        width: 60px;
       }
     }
   }
