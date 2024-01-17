@@ -1,13 +1,13 @@
 <script setup lang="tsx" name="useProTable">
 // import GridTest from './components/Grid/test.vue';
 // import SearchFormTest from './components/SearchForm/test.vue';
-import {ProTable} from "../packages/index";
+import {ProTable} from "packages/ProTable/index";
 import { getUserList } from "@/api/index";
 import {
   ColumnProps,
   HeaderRenderScope,
   ProTableInstance,
-} from "../packages/index";
+} from "packages/ProTable/interface";
 import { ElMessage } from "element-plus";
 import {
   CirclePlus,

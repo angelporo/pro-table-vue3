@@ -1,19 +1,15 @@
-import baseConfig from './base.config';
-import { defineConfig } from 'vite';
-import { resolve } from 'path';
-import dts from 'vite-plugin-dts';
-
+import baseConfig from "./base.config";
+import { defineConfig } from "vite";
+import { resolve } from "path";
+import dts from "vite-plugin-dts";
+console.log("__dirname", __dirname);
 export default defineConfig({
   ...baseConfig,
-  plugins: [
-    ...(baseConfig as any).plugins,
-    dts(),
-  ],
   build: {
     outDir: "dist", //输出文件名称
     lib: {
       entry: resolve(__dirname, "../packages/index.ts"), // 指定组件编译入口文件
-      name: 'components',
+      name: "components",
       fileName: (format) => `components.${format}.js`,
     }, //库编译模式配置
     rollupOptions: {
@@ -27,5 +23,5 @@ export default defineConfig({
       },
     }, // rollup打包配置
   },
-
+  plugins: [...(baseConfig as any).plugins, dts()],
 });

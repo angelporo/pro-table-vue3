@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { provide, ref } from 'vue';
-import { ColumnProps } from '../ProTable/interface';
+import { ColumnProps } from 'packages/ProTable/interface';
 import SearchForm from './index.vue';
 
 const enumMap = ref(new Map<string, { [key: string]: any }[]>());

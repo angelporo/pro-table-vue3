@@ -1,8 +1,8 @@
 import { VNode, ComponentPublicInstance } from "vue";
-import { BreakPoint, Responsive } from "@/components/Grid/interface";
+import { BreakPoint, Responsive } from "packages/Grid/interface";
 import { TableColumnCtx } from "element-plus/es/components/table/src/table-column/defaults";
-import { ProTableProps } from "@/components/ProTable/index.vue";
-import ProTable from "@/components/ProTable/index.vue";
+import { ProTableProps } from "packages/ProTable/index.vue";
+import ProTable from "packages/ProTable/index.vue";
 
 export interface EnumProps {
   label?: string; // 选项框显示的文字

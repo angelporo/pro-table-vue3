@@ -5,7 +5,7 @@
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
-    "baseUrl": "./",
+    "baseUrl": ".",
 
     /* Bundler mode */
     "moduleResolution": "node",
@@ -23,10 +23,12 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@": ["src"],
-      "@/*": ["src/*"]
+      "@": ["./src"],
+      "packages": ["./packages"],
+      "packages/*": ["./packages/*"],
+      "@/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "include": ["packages/**/*.ts", "packages/**/*.d.ts", "packages/**/*.tsx", "packages/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

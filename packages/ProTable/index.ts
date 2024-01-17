@@ -1,5 +1,5 @@
 import { App, Plugin } from 'vue';
-import ProTable from  "./index.vue"
+import ProTable from  "packages/ProTable/index.vue"
 
 
 export const ProTablePlugin: Plugin = {
