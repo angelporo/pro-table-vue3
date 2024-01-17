@@ -114,12 +114,12 @@ import { ref, computed, watch, provide, onMounted } from "vue";
 import { ElTable } from "element-plus";
 import { useTable } from "@/hooks/useTable";
 import { useSelection } from "@/hooks/useSelection";
-import { BreakPoint } from "@/components/Grid/interface";
+import { BreakPoint } from "./Grid/interface";
 import { isFunction } from "lodash";
-import { ColumnProps } from "@/components/ProTable/interface";
+import { ColumnProps } from "./ProTable/interface";
 import { Refresh, Operation, Search } from "@element-plus/icons-vue";
 import { handleProp } from "@/utils";
-import SearchForm from "@/components/SearchForm/index.vue";
+import SearchForm from "../SearchForm/index.vue";
 import Pagination from "./components/Pagination.vue";
 import ColSetting from "./components/ColSetting.vue";
 import TableColumn from "./components/TableColumn.vue";
@@ -298,8 +298,8 @@ const colRef = ref();
 const colSetting = tableColumns.value!.filter(
   (item) =>
     !["selection", "index", "expand"].includes(item.type!) &&
-    item.prop !== "operation" &&
-    item.isShow,
+         item.prop !== "operation" &&
+         item.isShow,
 );
 console.log("colSetting", colSetting);
 const openColSetting = () => colRef.value.openColSetting();
@@ -323,3 +323,129 @@ defineExpose({
   selectedListIds,
 });
 </script>
+
+
+<style lang="less">
+/* 表格 pagination 样式 */
+.el-pagination {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+/* el-table 表格样式 */
+.el-table {
+  flex: 1;
+  height: 350px !important;
+
+  /* 修复 safari 浏览器表格错位 https://github.com/HalseySpicy/Geeker-Admin/issues/83 */
+  table {
+    width: 100%;
+  }
+  .el-table__header th {
+    height: 45px;
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--el-text-color-primary);
+    background: var(--el-fill-color-light);
+  }
+  .el-table__row {
+    height: 45px;
+    font-size: 14px;
+    .el-table__placeholder {
+      display: inline;
+    }
+  }
+
+  /* 设置 el-table 中 header 文字不换行，并省略 */
+  .el-table__header .el-table__cell > .cell {
+    white-space: nowrap;
+  }
+
+  /* 解决表格数据为空时样式不居中问题(仅在element-plus中) */
+  .el-table__empty-block {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    .table-empty {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      line-height: 30px;
+      img{
+        width:60px;
+      }
+    }
+  }
+
+  /* table 中 image 图片样式 */
+  .table-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+}
+
+/* table-search 表格搜索样式 */
+.table-search {
+  padding: 18px 18px 0;
+  margin-bottom: 10px;
+  .el-form {
+    .el-form-item__content > * {
+      width: 100%;
+    }
+
+    /* 去除时间选择器上下 padding */
+    .el-range-editor.el-input__wrapper {
+      padding: 0 10px;
+    }
+  }
+  .operation {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+  }
+}
+
+/* 表格 header 样式 */
+.table-header {
+  .header-button-lf {
+    float: left;
+  }
+  .header-button-ri {
+    float: right;
+  }
+  .el-button {
+    margin-bottom: 15px;
+  }
+}
+
+/* custom card */
+.card {
+  box-sizing: border-box;
+  padding: 20px;
+  overflow-x: hidden;
+  background-color: var(--el-bg-color);
+  border: 1px solid var(--el-border-color-light);
+  border-radius: 6px;
+  box-shadow: 0 0 12px rgb(0 0 0 / 5%);
+}
+
+/* ProTable 不需要 card 样式（在组件内使用 ProTable 会使用到） */
+.no-card {
+  .card {
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .table-search {
+    padding: 18px 0 0 !important;
+    margin-bottom: 0 !important;
+  }
+}
+</style>

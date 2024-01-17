@@ -1,15 +1,31 @@
 {
-  "name": "pro-table",
+  "name": "@angel_pro/components-vue3",
   "private": true,
+  "description": "智运vue3组件抽离",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "start:dev": "vite --config ./build/base.config.ts",
+    "build-lib": "vite build --config ./build/lib.config.ts",
     "dev": "vite",
-    "build": "vue-tsc && vite build",
+    "build-tsc": "vue-tsc --noEmit && vite build",
+    "patch": "npm version patch -m 'build-lib: release 0.0.1'",
     "preview": "vite preview",
     "test": "vitest",
     "coverage": "vitest run --coverage"
   },
+  "main": "dist/components.umd.js",
+  "module": "dist/components.es.js",
+  "types": "components.d.ts",
+  "license": "MIT",
+  "authors": {
+    "name": "angel_pro",
+    "email": "angeliporo@gmail.com"
+  },
+  "files": [
+    "dist/*",
+    "components.d.ts"
+  ],
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
     "axios": "^1.4.0",
@@ -24,10 +40,13 @@
     "@vitest/coverage-v8": "^0.32.2",
     "@vue/test-utils": "^2.4.0-alpha.2",
     "happy-dom": "^9.20.3",
+    "less": "^4.2.0",
     "typescript": "^5.0.2",
     "unplugin-auto-import": "^0.16.4",
     "unplugin-vue-components": "^0.25.1",
     "vite": "^4.3.9",
+    "vite-plugin-dts": "^3.7.1",
+    "vite-plugin-md": "^0.21.5",
     "vitest": "^0.32.2",
     "vue-tsc": "^1.4.2"
   }

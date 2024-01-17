@@ -7,27 +7,17 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    ColSetting: typeof import('./src/components/ProTable/components/ColSetting.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElConfigProvider: typeof import('element-plus/es')['ElConfigProvider']
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElIcon: typeof import('element-plus/es')['ElIcon']
-    ElInput: typeof import('element-plus/es')['ElInput']
     ElPagination: typeof import('element-plus/es')['ElPagination']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTag: typeof import('element-plus/es')['ElTag']
-    Grid: typeof import('./src/components/Grid/index.vue')['default']
-    GridItem: typeof import('./src/components/Grid/components/GridItem.vue')['default']
-    Pagination: typeof import('./src/components/ProTable/components/Pagination.vue')['default']
-    ProTable: typeof import('./src/components/ProTable/index.vue')['default']
-    SearchForm: typeof import('./src/components/SearchForm/index.vue')['default']
-    SearchFormItem: typeof import('./src/components/SearchForm/components/SearchFormItem.vue')['default']
-    TableColumn: typeof import('./src/components/ProTable/components/TableColumn.vue')['default']
-    Test: typeof import('./src/components/Grid/test.vue')['default']
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']

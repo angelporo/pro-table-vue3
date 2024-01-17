@@ -4,7 +4,7 @@
       <Grid
         ref="gridRef"
         :collapsed="collapsed"
-        :gap="[20, 0]"
+        :gap="[20, 20]"
         :cols="searchCol"
       >
         <GridItem
@@ -54,8 +54,8 @@
 
 <script setup lang="tsx" name="SearchForm">
 import { computed, onMounted, ref, toRef } from "vue";
-import { ColumnProps } from "@/components/ProTable/interface";
-import { BreakPoint } from "@/components/Grid/interface";
+import { ColumnProps } from "../ProTable/interface";
+import { BreakPoint } from "../Grid/interface";
 import { Delete, Search, ArrowDown, ArrowUp } from "@element-plus/icons-vue";
 import SearchFormItem from "./components/SearchFormItem.vue";
 import Grid from "../Grid/index.vue";
