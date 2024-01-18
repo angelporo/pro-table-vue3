@@ -130,13 +130,13 @@ export interface ProTableProps {
   requestApi?: (params: any) => Promise<any>; // 请求表格数据的 api ==> 非必传
   requestAuto?: boolean; // 是否自动执行请求 api ==> 非必传（默认为true）
   requestError?: (params: any) => void; // 表格 api 请求错误监听 ==> 非必传
-  shouldUpdate?: (newParams, oldParams) => boolean;
+  shouldUpdate?: (newParams, oldParams) => boolean; // 判断搜索表单需要更新逻辑, 返回 true更新 , 使用于更新导致性能卡顿问题
   dataCallback?: (data: any) => any; // 返回数据的回调函数，可以对数据进行处理 ==> 非必传
   title?: string; // 表格标题，目前只在打印的时候用到 ==> 非必传
   pagination?: boolean; // 是否需要分页组件 ==> 非必传（默认为true）
   initParam?: any; // 初始化请求参数 ==> 非必传（默认为{}）
   border?: boolean; // 是否带有纵向边框 ==> 非必传（默认为true）
-  loading?:boolean;// 如果外部请求, 传入loading 状态
+  loading?: boolean; // 如果外部请求, 传入loading 状态
   toolButton?: boolean; // 是否显示表格功能按钮 ==> 非必传（默认为true）
   rowKey?: string; // 行数据的 Key，用来优化 Table 的渲染，当表格数据多选时，所指定的 id ==> 非必传（默认为 id）
   searchCol?: number | Record<BreakPoint, number>; // 表格搜索项 每列占比配置 ==> 非必传 { xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }
@@ -149,9 +149,8 @@ const props = withDefaults(defineProps<ProTableProps>(), {
   pagination: true,
   initParam: {},
   border: true,
-  loading:false,
+  loading: false,
   toolButton: true,
-  shouldUpdate: () => {},
   rowKey: "id",
   searchCol: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }),
 });
@@ -253,10 +252,9 @@ const searchParamsObj = computed(() =>
 watch(
   searchParamsObj,
   (searchParam, oldsearchParams) => {
-    if (props?.shouldUpdate(searchParam, oldsearchParams)) {
+    if (props?.shouldUpdate?.(searchParam, oldsearchParams)) {
       return false;
     }
-
     let arr = [];
     initSearchCol?.forEach((item) => {
       if (isFunction(item?.columns)) {
