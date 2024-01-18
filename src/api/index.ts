@@ -38,8 +38,8 @@ export const getUserList = (params: any) => {
         code: 200,
         msg: "成功",
         data: {
-          records: [1, 2, 3, 4, 2, 5, 65, 23].map((item) => ({
-            id: Date.now(),
+          records: [1, 2, 3, 4, 2, 5, 65, 23].map((item,i) => ({
+            id: Date.now() + i,
             username: "王洋",
             gender: 2,
             user: {
