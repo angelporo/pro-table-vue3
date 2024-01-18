@@ -1,7 +1,7 @@
 <script setup lang="tsx" name="useProTable">
 // import GridTest from './components/Grid/test.vue';
 // import SearchFormTest from './components/SearchForm/test.vue';
-import {ProTable} from "packages/ProTable/index";
+import { ProTable } from "packages/ProTable/index";
 import { getUserList } from "@/api/index";
 import {
   ColumnProps,
@@ -61,10 +61,10 @@ console.log("勾选的数据", selected);
 // 或者直接去 hooks/useTable.ts 文件中把字段改为你后端对应的就行
 const dataCallback = (data: any) => {
   const result = {
-    list: data.data.list,
-    total: data.data.total,
-    pageNum: data.data.pageNum,
-    pageSize: data.data.pageSize,
+    records: data.records,
+    total: data.total,
+    current: data.current,
+    size: data.size,
   };
   console.log("data", result);
   return result;

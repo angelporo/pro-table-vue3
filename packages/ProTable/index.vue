@@ -4,7 +4,7 @@
     v-show="isShowSearch"
     :search="search"
     :reset="reset"
-    :loadingVisible="loading ?? loadingVisible"
+    :loadingVisible="loading || loadingVisible"
     ref="searchRef"
     :columns="searchColumns"
     :search-param="searchParam"
@@ -46,10 +46,10 @@
     <el-table
       ref="tableRef"
       v-bind="$attrs"
-      :data="data ?? tableData"
+      :data="data || tableData"
       :border="border"
       :row-key="rowKey"
-      v-loading="loading ?? loadingVisible"
+      v-loading="loading || loadingVisible"
       @selection-change="selectionChange"
     >
       <!-- 默认插槽 -->
@@ -136,7 +136,7 @@ export interface ProTableProps {
   pagination?: boolean; // 是否需要分页组件 ==> 非必传（默认为true）
   initParam?: any; // 初始化请求参数 ==> 非必传（默认为{}）
   border?: boolean; // 是否带有纵向边框 ==> 非必传（默认为true）
-  loading?:boolean:// 如果外部请求, 传入loading 状态
+  loading?:boolean;// 如果外部请求, 传入loading 状态
   toolButton?: boolean; // 是否显示表格功能按钮 ==> 非必传（默认为true）
   rowKey?: string; // 行数据的 Key，用来优化 Table 的渲染，当表格数据多选时，所指定的 id ==> 非必传（默认为 id）
   searchCol?: number | Record<BreakPoint, number>; // 表格搜索项 每列占比配置 ==> 非必传 { xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }
@@ -300,7 +300,6 @@ const colSetting = tableColumns.value!.filter(
     item.prop !== "operation" &&
     item.isShow,
 );
-console.log("colSetting", colSetting);
 const openColSetting = () => colRef.value.openColSetting();
 
 // 暴露给父组件的参数和方法(外部需要什么，都可以从这里暴露出去)
@@ -315,6 +314,7 @@ defineExpose({
   reset,
   handleSizeChange,
   handleCurrentChange,
+  loadingVisible,
   clearSelection,
   enumMap,
   isSelected,

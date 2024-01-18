@@ -32,9 +32,9 @@ export const useProTable = (options: useTableProps) => {
     // 分页数据
     pageable: {
       // 当前页数
-      pageNum: 1,
+      current: 1,
       // 每页显示条数
-      pageSize: 10,
+      size: 10,
       // 总条数
       total: 0,
     },
@@ -53,8 +53,8 @@ export const useProTable = (options: useTableProps) => {
   const pageParam = computed({
     get: () => {
       return {
-        pageNum: state.pageable.pageNum,
-        pageSize: state.pageable.pageSize,
+        current: state.pageable.current,
+        size: state.pageable.size,
       };
     },
     set: (newVal: any) => {
@@ -83,13 +83,16 @@ export const useProTable = (options: useTableProps) => {
         ...state.searchInitParam,
         ...state.totalParam,
       });
-      let { data } = res;
+      console.log("proTable 获取接口返回内容",res)
+      let { data,code,msg } = res;
+
+      // NOTE: 根据 pigx 返回R 实例对接
       dataCallBack && (data = dataCallBack(data));
       state.tableData = isPageable ? data.records : data;
       // 解构后台返回的分页数据 (如果有分页更新分页信息)
       if (isPageable) {
-        const { pageNum, pageSize, total } = data;
-        updatePageable({ pageNum, pageSize, total });
+        const { current, size, total } = data;
+        updatePageable({ current, size, total });
       }
     } catch (error) {
       requestError && requestError(error);
@@ -131,8 +134,8 @@ export const useProTable = (options: useTableProps) => {
    * */
   const updatePageable = (pageable: Table.Pageable) => {
     if (
-      pageable.pageNum === undefined ||
-        pageable.pageSize === undefined ||
+      pageable.current === undefined ||
+        pageable.size === undefined ||
         pageable.total === undefined
     )
       return;
@@ -144,16 +147,15 @@ export const useProTable = (options: useTableProps) => {
    * @return void
    * */
   const search = (formEl: FormInstance | undefined) => {
-    console.log("formEl", formEl);
+    console.log("ProTable formRef", formEl);
     if (!formEl) return;
     formEl.validate((valid) => {
       if (valid) {
-        console.log("submit!", valid);
-        state.pageable.pageNum = 1;
+        state.pageable.current = 1;
         updatedTotalParam();
         getTableList();
       } else {
-        console.log("error submit!");
+        console.log("表单校验未通过！");
         return false;
       }
     });
@@ -164,7 +166,7 @@ export const useProTable = (options: useTableProps) => {
    * @return void
    * */
   const reset = () => {
-    state.pageable.pageNum = 1;
+    state.pageable.current = 1;
     state.searchParam = {};
     // 重置搜索表单的时，如果有默认搜索参数，则重置默认的搜索参数
     Object.keys(state.searchInitParam).forEach((key) => {
@@ -180,8 +182,8 @@ export const useProTable = (options: useTableProps) => {
    * @return void
    * */
   const handleSizeChange = (val: number) => {
-    state.pageable.pageNum = 1;
-    state.pageable.pageSize = val;
+    state.pageable.current = 1;
+    state.pageable.size = val;
     getTableList();
   };
 
@@ -191,7 +193,7 @@ export const useProTable = (options: useTableProps) => {
    * @return void
    * */
   const handleCurrentChange = (val: number) => {
-    state.pageable.pageNum = val;
+    state.pageable.current = val;
     getTableList();
   };
 
