@@ -79,12 +79,13 @@ export const useProTable = (options: useTableProps) => {
         isPageable ? pageParam.value : {},
       );
       state.loadingVisible = true;
-      let { data } = await api({
+      let res = await api({
         ...state.searchInitParam,
         ...state.totalParam,
       });
+      let { data } = res;
       dataCallBack && (data = dataCallBack(data));
-      state.tableData = isPageable ? data.list : data;
+      state.tableData = isPageable ? data.records : data;
       // 解构后台返回的分页数据 (如果有分页更新分页信息)
       if (isPageable) {
         const { pageNum, pageSize, total } = data;

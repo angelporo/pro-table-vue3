@@ -4,7 +4,7 @@
     v-show="isShowSearch"
     :search="search"
     :reset="reset"
-    :loadingVisible="loadingVisible"
+    :loadingVisible="loading ?? loadingVisible"
     ref="searchRef"
     :columns="searchColumns"
     :search-param="searchParam"
@@ -49,7 +49,7 @@
       :data="data ?? tableData"
       :border="border"
       :row-key="rowKey"
-      v-loading="loadingVisible"
+      v-loading="loading ?? loadingVisible"
       @selection-change="selectionChange"
     >
       <!-- 默认插槽 -->
@@ -136,6 +136,7 @@ export interface ProTableProps {
   pagination?: boolean; // 是否需要分页组件 ==> 非必传（默认为true）
   initParam?: any; // 初始化请求参数 ==> 非必传（默认为{}）
   border?: boolean; // 是否带有纵向边框 ==> 非必传（默认为true）
+  loading?:boolean:// 如果外部请求, 传入loading 状态
   toolButton?: boolean; // 是否显示表格功能按钮 ==> 非必传（默认为true）
   rowKey?: string; // 行数据的 Key，用来优化 Table 的渲染，当表格数据多选时，所指定的 id ==> 非必传（默认为 id）
   searchCol?: number | Record<BreakPoint, number>; // 表格搜索项 每列占比配置 ==> 非必传 { xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }
@@ -148,6 +149,7 @@ const props = withDefaults(defineProps<ProTableProps>(), {
   pagination: true,
   initParam: {},
   border: true,
+  loading:false,
   toolButton: true,
   shouldUpdate: () => {},
   rowKey: "id",
@@ -199,7 +201,9 @@ console.log(tableColumns.value);
 
 // 定义 enumMap 存储 enum 值（避免异步请求无法格式化单元格内容 || 无法填充搜索下拉选择）
 const enumMap = ref(new Map<string, { [key: string]: any }[]>());
+
 provide("enumMap", enumMap);
+
 const setEnumMap = async (col: ColumnProps) => {
   if (!col.enum) return;
   // 如果当前 enum 为后台数据需要请求数据，则调用该请求接口，并存储到 enumMap
@@ -263,7 +267,6 @@ watch(
       }
       arr.push(item);
     });
-    console.log("arr", arr);
     searchColumns.value = arr;
   },
   {
@@ -393,9 +396,9 @@ defineExpose({
     }
 
     /* 去除时间选择器上下 padding */
-    .el-range-editor.el-input__wrapper {
-      padding: 0 10px;
-    }
+    /* .el-range-editor.el-input__wrapper {
+       padding: 0 10px;
+       } */
   }
   .operation {
     display: flex;
@@ -421,12 +424,12 @@ defineExpose({
 /* custom card */
 .card {
   box-sizing: border-box;
-  padding: 20px;
-  overflow-x: hidden;
-  background-color: var(--el-bg-color);
-  border: 1px solid var(--el-border-color-light);
-  border-radius: 6px;
-  box-shadow: 0 0 12px rgb(0 0 0 / 5%);
+  /* padding: 20px; */
+  /* overflow-x: hidden;
+     background-color: var(--el-bg-color);
+     border: 1px solid var(--el-border-color-light);
+     border-radius: 6px;
+     box-shadow: 0 0 12px rgb(0 0 0 / 5%); */
 }
 
 /* ProTable 不需要 card 样式（在组件内使用 ProTable 会使用到） */
