@@ -109,7 +109,7 @@ const submitSearch = () => {
 
 defineExpose({
   submitSearch,
-  formRef:formRef.value,
+  formEl:formRef,
 });
 
 // 判断是否显示 展开/合并 按钮
