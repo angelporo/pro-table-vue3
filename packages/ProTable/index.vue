@@ -12,7 +12,7 @@
   />
 
   <!-- 表格内容 card -->
-  <div class="card table-main">
+  <div class="no-card">
     <!-- 表格头部 操作按钮 -->
     <div class="table-header">
       <div class="header-button-lf">
@@ -422,12 +422,12 @@ defineExpose({
 /* custom card */
 .card {
   box-sizing: border-box;
-  /* padding: 20px; */
-  /* overflow-x: hidden;
-     background-color: var(--el-bg-color);
-     border: 1px solid var(--el-border-color-light);
-     border-radius: 6px;
-     box-shadow: 0 0 12px rgb(0 0 0 / 5%); */
+  padding: 20px;
+  overflow-x: hidden;
+  background-color: var(--el-bg-color);
+  border: 1px solid var(--el-border-color-light);
+  border-radius: 6px;
+  box-shadow: 0 0 12px rgb(0 0 0 / 5%);
 }
 
 /* ProTable 不需要 card 样式（在组件内使用 ProTable 会使用到） */

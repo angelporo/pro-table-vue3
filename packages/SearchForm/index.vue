@@ -1,5 +1,5 @@
 <template>
-  <div v-if="columns.length" class="card table-search">
+  <div v-if="columns.length" class="no-card table-search">
     <el-form ref="formRef" :model="searchParam">
       <Grid
         ref="gridRef"
@@ -104,12 +104,12 @@ const breakPoint = computed<BreakPoint>(() => gridRef.value?.breakPoint);
 const formRef = ref();
 
 const submitSearch = () => {
-  console.log("loadingVisible", props.loadingVisible);
   props.search(formRef.value);
 };
 
 defineExpose({
   submitSearch,
+  formRef:formRef.value,
 });
 
 // 判断是否显示 展开/合并 按钮
