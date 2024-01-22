@@ -58,13 +58,6 @@ const RenderTableColumn = <T>(item: ColumnProps,props) => {
     return row[property] === value
   }
 
-  // console.log("111111111111",filterEnum(
-  //   handleRowAccordingToProp(scope.row, item.prop!),
-  //   enumMap.value.get(item.prop)!,
-  //   item.fieldNames,
-  // ))
-
-
   const getFiltersObj = () => {
     try {
       let filters = [];
