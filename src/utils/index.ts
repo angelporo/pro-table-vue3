@@ -7,8 +7,8 @@ import { FieldNamesProps } from "@/components/ProTable/interface";
  * @returns {*}
  * */
 export function handleRowAccordingToProp(row: { [key: string]: any }, prop: string) {
-  if (!prop.includes(".")) return row[prop] ?? "--";
-  prop.split(".").forEach(item => (row = row[item] ?? "--"));
+  if (!prop.includes(".")) return row[prop] ?? "-";
+  prop.split(".").forEach(item => (row = row[item] ?? "-"));
   return row;
 }
 
@@ -42,7 +42,7 @@ export function filterEnum(callValue: any, enumData?: any, fieldNames?: FieldNam
   if (type == "tag") {
     return filterData?.tagType ? filterData.tagType : "";
   } else {
-    return filterData ? filterData[label] : "--";
+    return filterData ? filterData[label] : "-";
   }
 }
 
@@ -60,8 +60,8 @@ export function filterEnum(callValue: any, enumData?: any, fieldNames?: FieldNam
  * */
 export function formatValue(callValue: any) {
   // 如果当前值为数组，使用 / 拼接（根据需求自定义）
-  if (isArray(callValue)) return callValue.length ? callValue.join(" / ") : "--";
-  return callValue ?? "--";
+  if (isArray(callValue)) return callValue.length ? callValue.join(" / ") : "-";
+  return callValue ?? "-";
 }
 
 /**

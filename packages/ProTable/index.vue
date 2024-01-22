@@ -1,15 +1,16 @@
 <template>
     <!-- 查询表单 card -->
-  <SearchForm
-    v-show="isShowSearch"
-    :search="search"
-    :reset="reset"
-    :loadingVisible="loading || loadingVisible"
-    ref="searchRef"
-    :columns="searchColumns"
-    :search-param="searchParam"
-    :search-col="searchCol"
-  />
+  <el-config-provider :locale="locale">
+    <SearchForm
+      v-show="isShowSearch"
+      :search="search"
+      :reset="reset"
+      :loadingVisible="loading || loadingVisible"
+      ref="searchRef"
+      :columns="searchColumns"
+      :search-param="searchParam"
+      :search-col="searchCol"
+    />
 
   <!-- 表格内容 card -->
   <div class="no-card">
@@ -107,6 +108,7 @@
   </div>
   <!-- 列设置：右侧抽屉组件 -->
   <ColSetting v-if="toolButton" ref="colRef" v-model:col-setting="colSetting" />
+  </el-config-provider>
 </template>
 
 <script setup lang="ts" name="ProTable">
@@ -123,6 +125,7 @@ import SearchForm from "packages/SearchForm/index.vue";
 import Pagination from "./components/Pagination.vue";
 import ColSetting from "./components/ColSetting.vue";
 import TableColumn from "./components/TableColumn.vue";
+import locale from 'element-plus/lib/locale/lang/zh-cn' //引入element-plus中文包
 
 export interface ProTableProps {
   columns: ColumnProps[]; // 列配置项  ==> 必传

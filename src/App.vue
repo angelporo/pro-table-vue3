@@ -51,7 +51,14 @@ const headerRender = (scope: HeaderRenderScope<ResUserList>) => {
     </el-button>
   );
 };
+const enumData = ref([])
 
+setTimeout(() => {
+  enumData.value = [
+    { genderLabel: "男", genderValue: 1 },
+    { genderLabel: "女", genderValue: 2 },
+  ]
+},4000)
 // 当前选中的数据
 const selected = computed(() => proTable.value?.selectedList);
 console.log("Protable暴露出来的属性和方法", proTable);
@@ -127,10 +134,7 @@ const columns: ColumnProps<ResUserList>[] = [
         trigger: ["blur", "change"],
       },
     ],
-    enum: [
-      { genderLabel: "男", genderValue: 1 },
-      { genderLabel: "女", genderValue: 2 },
-    ],
+    enum: enumData,
     // 字典请求携带参数
     // enum: () => getUserGender({ id: 1 }),
     search: { el: "select", props: { filterable: true } },
