@@ -4,7 +4,7 @@ import ProTable from  "packages/ProTable/index.vue"
 
 export const ProTablePlugin: Plugin = {
   install(app: App) {
-    app.component('sd-protable', ProTable);
+    app.component("pro-table", ProTable);
   },
 };
 

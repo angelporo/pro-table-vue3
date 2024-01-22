@@ -22,8 +22,8 @@
             <SearchFormItem :column="item" :search-param="searchParam" />
           </el-form-item>
         </GridItem>
-        <GridItem suffix>
-          <div class="operation">
+        <GridItem  suffix>
+            <div class="operation">
             <el-button
               :loading="loadingVisible"
               type="primary"
@@ -45,7 +45,7 @@
                 <component :is="collapsed ? ArrowDown : ArrowUp"></component>
               </el-icon>
             </el-button>
-          </div>
+            </div>
         </GridItem>
       </Grid>
     </el-form>
@@ -60,10 +60,6 @@ import { Delete, Search, ArrowDown, ArrowUp } from "@element-plus/icons-vue";
 import SearchFormItem from "./components/SearchFormItem.vue";
 import Grid from "../Grid/index.vue";
 import GridItem from "../Grid/components/GridItem.vue";
-
-onMounted(() => {
-  console.log("11111111111111111111", formRef);
-});
 
 interface ProTableProps {
   columns?: ColumnProps[]; // 搜索配置列

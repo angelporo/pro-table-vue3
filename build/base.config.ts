@@ -26,12 +26,12 @@ export default defineConfig({
       include: [/\.vue$/, /\.md$/],
     }),
     vueJsx(),
-    AutoImport({
-      resolvers: [ElementPlusResolver()],
-    }),
-    Components({
-      resolvers: [ElementPlusResolver()],
-    }),
+    // AutoImport({
+    //   resolvers: [ElementPlusResolver()],
+    // }),
+    // Components({
+    //   resolvers: [ElementPlusResolver()],
+    // }),
     Markdown(),
   ],
 });

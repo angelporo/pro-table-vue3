@@ -1,5 +1,5 @@
 <template>
-  <!-- 查询表单 card -->
+    <!-- 查询表单 card -->
   <SearchForm
     v-show="isShowSearch"
     :search="search"

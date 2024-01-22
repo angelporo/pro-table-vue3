@@ -1,5 +1,5 @@
 import { Table } from "./interface";
-import { FormInstance } from "element-plus";
+import { FormInstance, ElMessage } from "element-plus";
 import { reactive, computed, toRefs } from "vue";
 
 type useTableProps = {
@@ -83,8 +83,8 @@ export const useProTable = (options: useTableProps) => {
         ...state.searchInitParam,
         ...state.totalParam,
       });
-      console.log("proTable 获取接口返回内容",res)
-      let { data,code,msg } = res;
+      console.log("proTable 获取接口返回内容", res);
+      let { data, code, msg } = res;
 
       // NOTE: 根据 pigx 返回R 实例对接
       dataCallBack && (data = dataCallBack(data));
@@ -149,14 +149,20 @@ export const useProTable = (options: useTableProps) => {
   const search = (formEl: FormInstance | undefined) => {
     console.log("ProTable formRef", formEl);
     if (!formEl) return;
-    formEl.validate((valid) => {
+    formEl.validate((valid, obj) => {
       if (valid) {
         state.pageable.current = 1;
         updatedTotalParam();
         getTableList();
       } else {
-        console.log("表单校验未通过！");
-        return false;
+        try {
+          const [{ message }] = obj[Object.keys(obj)[0]];
+          ElMessage.warning(message);
+        } catch (err) {
+          ElMessage.warning("表单校验未通过");
+        } finally {
+          return false;
+        }
       }
     });
   };

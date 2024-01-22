@@ -269,7 +269,8 @@ const expandChange = (row) => {
 </script>
 
 <template>
-  <div class="content-box">
+  <el-config-provider size="small" >
+    <div class="content-box">
     <ProTable
       ref="proTable"
       title="用户列表"
@@ -359,6 +360,7 @@ const expandChange = (row) => {
     </ProTable>
     <div>{{ selected }}</div>
   </div>
+  </el-config-provider>
 </template>
 
 <style>
