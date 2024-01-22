@@ -1,6 +1,6 @@
 <template>
     <!-- 查询表单 card -->
-  <el-config-provider :locale="locale">
+  <el-config-provider :locale="langlocale">
     <SearchForm
       v-show="isShowSearch"
       :search="search"
@@ -163,6 +163,9 @@ const isShowSearch = ref(true);
 
 // 表格 DOM 元素: ProTable 组件内部暴露了 el-table DOM，可通过 proTable.value.element.方法名 调用其方法
 const tableRef = ref<InstanceType<typeof ElTable>>();
+
+
+const langlocale = ref(locale)
 
 // 表格多选 Hooks
 const { selectionChange, selectedList, selectedListIds, isSelected } =
