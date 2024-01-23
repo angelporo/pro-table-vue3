@@ -69,7 +69,7 @@
             :align="item.align ?? 'center'"
             :reserve-selection="item.type == 'selection'"
           >
-            <!-- 实现跨页数据勾选保存：设置 rowKey，每一行设置reserve-selection -->
+            <!-- 实现跨页数据勾选保存：设置 rowKey，每一行设置 reserve-selection -->
             <template v-if="item.type == 'expand'" #default="scope">
               <component :is="item.render" v-bind="scope" v-if="item.render">
               </component>
@@ -77,6 +77,7 @@
             </template>
           </el-table-column>
           <!-- other -->
+
           <TableColumn
             v-if="!item.type && item.prop && item.isShow"
             :column="item"
@@ -120,7 +121,7 @@
 </template>
 
 <script setup lang="ts" name="ProTable">
-import { ref, computed, watch, provide, onMounted } from "vue";
+import { ref, computed, nextTick, watch, provide, onMounted } from "vue";
 import { ElTable } from "element-plus";
 import { useProTable } from "@/hooks/useTable";
 import { useSelection } from "@/hooks/useSelection";
@@ -202,7 +203,9 @@ const {
 // 清空选中数据列表
 const clearSelection = () => tableRef.value!.clearSelection();
 // 初始化请求
-onMounted(() => props.requestAuto && getTableList());
+onMounted(() => {
+  props.requestAuto && getTableList();
+});
 
 // 监听页面 initParam 改化，重新获取表格数据
 watch(() => props.initParam, getTableList, { deep: true });
@@ -230,7 +233,7 @@ const flatColumnsFunc = (
   columns: ColumnProps[],
   flatArr: ColumnProps[] = [],
 ) => {
-  columns.forEach(async (col) => {
+  columns.forEach((col, index) => {
     if (col._children?.length) flatArr.push(...flatColumnsFunc(col._children));
     flatArr.push(col);
 
@@ -239,7 +242,7 @@ const flatColumnsFunc = (
     col.isFilterEnum = col.isFilterEnum ?? true;
     col.isTableSort = col.isTableSort ?? true;
     col.fixed = col.fixed ?? false;
-
+    col.sortIndex = index ?? col.fixed;
     // 设置 enumMap
     setEnumMap(col);
   });
@@ -311,6 +314,11 @@ const colSetting = tableColumns.value!.filter(
     item.prop !== "operation" &&
     item.isShow,
 );
+
+watch(tableColumns, (tableColumns) => {
+  console.log("old", tableColumns);
+});
+
 const openColSetting = () => colRef.value.openColSetting();
 
 // 暴露给父组件的参数和方法(外部需要什么，都可以从这里暴露出去)

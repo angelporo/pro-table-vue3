@@ -102,7 +102,6 @@ const RenderTableColumn = <T>(item: ColumnProps,props) => {
           {/* showOverflowTooltip：溢出隐藏，在鼠标移动到目标元素上时，显示 */}
           {{
             default: (scope: RenderScope<any>) => {
-              console.log("22222222222222222",scope)
               if (item._children)
                 return item._children.map((child) => RenderTableColumn(child));
               if (item.render) return item.render(scope); //自定义渲染内容tsx（eg:启用，禁用）

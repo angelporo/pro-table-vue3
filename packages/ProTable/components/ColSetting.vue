@@ -2,15 +2,52 @@
   <!-- 列设置 -->
   <el-drawer v-model="drawerVisible" title="列设置" size="500px">
     <div class="table-main">
-      <el-table :data="colSetting" :border="true" row-key="prop" default-expand-all :tree-props="{ children: '_children' }">
+      <el-table
+        :data="colSetting"
+        :border="true"
+        row-key="prop"
+        default-expand-all
+        row-class-name="pro-table-cursor-move"
+        :tree-props="{ children: '_children' }"
+        ref="TableRef"
+      >
+        <!-- <el-table-column
+             width="80"
+             class-name="drag-icon"
+             prop="sort"
+             align="center"
+             label="排序"
+             >
+             <el-icon :size="14">
+             <Grid></Grid>
+             </el-icon>
+             </el-table-column> -->
         <el-table-column prop="label" align="center" label="列名" />
-        <el-table-column v-slot="scope" prop="isShow" align="center" label="显示">
+        <el-table-column
+          v-slot="scope"
+          prop="isShow"
+          align="center"
+          label="显示"
+        >
           <el-switch v-model="scope.row.isShow"></el-switch>
         </el-table-column>
-        <el-table-column v-slot="scope" prop="sortable" align="center" label="排序">
-          <el-switch :disabled="!scope.row.isTableSort" v-model="scope.row.sortable"></el-switch>
+        <el-table-column
+          v-slot="scope"
+          prop="sortable"
+          align="center"
+          label="排序"
+        >
+          <el-switch
+            :disabled="!scope.row.isTableSort"
+            v-model="scope.row.sortable"
+          ></el-switch>
         </el-table-column>
-        <el-table-column v-slot="scope" prop="sortable" align="center" label="冻结列">
+        <el-table-column
+          v-slot="scope"
+          prop="sortable"
+          align="center"
+          label="冻结列"
+        >
           <el-switch v-model="scope.row.fixed"></el-switch>
         </el-table-column>
 
@@ -26,24 +63,67 @@
 </template>
 
 <script setup lang="ts" name="ColSetting">
-import { ref } from "vue";
+import { ref, watch, nextTick, onMounted } from "vue";
+import Sortable from "sortablejs";
+import { Grid } from "@element-plus/icons-vue";
 import { ColumnProps } from "@/components/ProTable/interface";
 
-defineProps<{ colSetting: ColumnProps[] }>();
+const TableRef = ref();
 
+const props = withDefaults(defineProps<{ colSetting: ColumnProps[] }>(), {
+  colSetting: [],
+});
 const drawerVisible = ref<boolean>(false);
+
+const initDropTable = () => {
+  if (!TableRef.value) return;
+  const el = TableRef.value.$el.querySelector(".el-table__body tbody");
+  Sortable.create(el, {
+    handle: ".el-table__row", // 设置指定列作为拖拽
+    onEnd(evt: any) {
+      const { newIndex, oldIndex } = evt;
+      console.log(newIndex);
+      console.log(oldIndex);
+      const currRow = props.colSetting?.splice(oldIndex, 1)[0];
+      props.colSetting?.splice(newIndex, 0, currRow);
+      sortIndex();
+    },
+  });
+};
+
+const sortIndex = () => {
+  const array = [];
+  props.colSetting.forEach((e, i) => {
+    const obj = {
+      index: i + 1,
+      ...e,
+    };
+    array.push(obj);
+  });
+  console.log("array", array);
+};
+
+onMounted(() => {
+  nextTick(() => {
+    watch(props.colSetting, (colSetting, oldcolSetting) => {
+      if (colSetting?.length) {
+        initDropTable();
+      }
+    });
+  });
+});
 
 const openColSetting = () => {
   drawerVisible.value = true;
 };
 
 defineExpose({
-  openColSetting
+  openColSetting,
 });
 </script>
 
-<style scoped>
-.cursor-move {
+<style>
+.pro-table-cursor-move {
   cursor: move;
 }
 </style>
