@@ -50,7 +50,7 @@ const getTagType = (item: ColumnProps, scope: RenderScope<any>) => {
 };
 
 
-const RenderTableColumn = <T>(item: ColumnProps,props) => {
+const RenderTableColumn = <T,>(item: ColumnProps,props) => {
   let filtersObj = [];
 
   const filterHandler = (value,row, column) => {
