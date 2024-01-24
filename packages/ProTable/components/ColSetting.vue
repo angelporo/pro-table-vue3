@@ -48,7 +48,19 @@
           align="center"
           label="冻结列"
         >
-          <el-switch v-model="scope.row.fixed"></el-switch>
+            <el-switch
+          inline-prompt
+          v-model="scope.row.fixedLeft"
+          active-text="左"
+          inactive-text="左"
+        />
+        <br>
+        <el-switch
+          inline-prompt
+          v-model="scope.row.fixedRight"
+          active-text="右"
+          inactive-text="右"
+        />
         </el-table-column>
 
         <template #empty>
@@ -75,6 +87,18 @@ const props = withDefaults(defineProps<{ colSetting: ColumnProps[] }>(), {
 });
 const drawerVisible = ref<boolean>(false);
 
+const sortIndex = () => {
+  const array:object[] = [];
+  props.colSetting.forEach((e, i) => {
+    const obj = {
+      index: i + 1,
+      ...e,
+    };
+    array.push(obj);
+  });
+  return array
+};
+
 const initDropTable = () => {
   if (!TableRef.value) return;
   const el = TableRef.value.$el.querySelector(".el-table__body tbody");
@@ -92,17 +116,7 @@ const initDropTable = () => {
   });
 };
 
-const sortIndex = () => {
-  const array:object[] = [];
-  props.colSetting.forEach((e, i) => {
-    const obj = {
-      index: i + 1,
-      ...e,
-    };
-    array.push(obj);
-  });
-  return array
-};
+
 
 onMounted(() => {
   nextTick(() => {

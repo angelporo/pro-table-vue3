@@ -222,8 +222,7 @@ provide("enumMap", enumMap);
 const setEnumMap = async (col: ColumnProps) => {
   if (!col.enum) return;
   // 如果当前 enum 为后台数据需要请求数据，则调用该请求接口，并存储到 enumMap
-  if (typeof col.enum !== "function")
-    return enumMap.value.set(col.prop!, col.enum!);
+  if (typeof col.enum !== "function") {return enumMap.value.set(col.prop!, col.enum!)}
   const { data } = await col.enum();
   enumMap.value.set(col.prop!, data);
 };
@@ -241,8 +240,9 @@ const flatColumnsFunc = (
     col.isShow = col.isShow ?? true;
     col.isFilterEnum = col.isFilterEnum ?? true;
     col.isTableSort = col.isTableSort ?? true;
-    col.fixed = col.fixed ?? false;
-    col.sortIndex = index ?? col.fixed;
+    // col.fixed = col.fixed=='left' ?   ? false;
+    // col.sortIndex = index ?? col.fixed;
+    col.fixed=='left' ? col.fixedLeft=true : col.fixed=='right' ? col.fixdRight= true : null;
     // 设置 enumMap
     setEnumMap(col);
   });
@@ -331,8 +331,22 @@ const colSetting = tableColumns.value!.filter(
     item.isShow,
 );
 
-const openColSetting = () => colRef.value.openColSetting();
+watch(colSetting,(newVal)=>{
+  newVal.map((item)=>{
+    for (const iterator of props.columns) {
+      if(item.prop == iterator.prop){
+        iterator.fixed = item.fixedLeft ? 'left' : item.fixedRight ? 'right' : false
+        return
+      }
+    }
+  })
+})
 
+const openColSetting = () => colRef.value.openColSetting();
+/**
+ * @description 拖拽列响应函数
+ * @param {array} 整体配置
+*/
 const changeColIndex = (arr:object[])=>{
   const tem = tableColumns.value.filter(({type})=>["selection", "index", "expand"].includes(type))
   tableColumns.value = [...tem,...arr]
