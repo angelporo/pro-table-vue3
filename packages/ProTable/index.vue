@@ -1,6 +1,6 @@
 <template>
   <!-- 查询表单 card -->
-  <el-config-provider :locale="langlocale">
+  <el-config-provider :locale="config.locale">
     <SearchForm
       v-show="isShowSearch"
       :search="search"
@@ -125,6 +125,7 @@ import { ref, computed, nextTick, watch, provide, onMounted } from "vue";
 import { ElTable } from "element-plus";
 import { useProTable } from "@/hooks/useTable";
 import { useSelection } from "@/hooks/useSelection";
+import { useGlobalConfig } from "@/hooks/useGlobalConfig";
 import { BreakPoint } from "packages/Grid/interface";
 import { isFunction } from "lodash";
 import { ColumnProps } from "packages/ProTable/interface";
@@ -134,7 +135,6 @@ import SearchForm from "packages/SearchForm/index.vue";
 import Pagination from "./components/Pagination.vue";
 import ColSetting from "./components/ColSetting.vue";
 import TableColumn from "./components/TableColumn.vue";
-import locale from "element-plus/lib/locale/lang/zh-cn"; //引入element-plus中文包
 
 export interface ProTableProps {
   columns: ColumnProps[]; // 列配置项  ==> 必传
@@ -153,7 +153,8 @@ export interface ProTableProps {
   rowKey?: string; // 行数据的 Key，用来优化 Table 的渲染，当表格数据多选时，所指定的 id ==> 非必传（默认为 id）
   searchCol?: number | Record<BreakPoint, number>; // 表格搜索项 每列占比配置 ==> 非必传 { xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }
 }
-
+const config = useGlobalConfig();
+console.log("global config", config);
 // 接受父组件参数，配置默认值
 const props = withDefaults(defineProps<ProTableProps>(), {
   columns: () => [],
@@ -172,8 +173,6 @@ const isShowSearch = ref(true);
 
 // 表格 DOM 元素: ProTable 组件内部暴露了 el-table DOM，可通过 proTable.value.element.方法名 调用其方法
 const tableRef = ref<InstanceType<typeof ElTable>>();
-
-const langlocale = ref(locale);
 
 // 表格多选 Hooks
 const { selectionChange, selectedList, selectedListIds, isSelected } =
@@ -289,22 +288,38 @@ watch(
   },
 );
 
-// 设置搜索表单排序默认值 && 设置搜索表单项的默认值
-searchColumns.value.forEach((column, index) => {
-  column.search!.order = column.search!.order ?? index + 2;
-  if (
-    column.search?.defaultValue !== undefined &&
-    column.search?.defaultValue !== null
-  ) {
-    searchInitParam.value[column.search.key ?? handleProp(column.prop!)] =
-      column.search?.defaultValue;
-    searchParam.value[column.search.key ?? handleProp(column.prop!)] =
-      column.search?.defaultValue;
-  }
-});
+const makeSearchColumns = () => {
+  // 设置搜索表单排序默认值 && 设置搜索表单项的默认值
+  searchColumns.value.forEach((column, index) => {
+    column.search!.order = column.search!.order ?? index + 2;
+    if (
+      column.search?.defaultValue !== undefined &&
+      column.search?.defaultValue !== null
+    ) {
+      searchInitParam.value[column.search.key ?? handleProp(column.prop!)] =
+        column.search?.defaultValue;
+      searchParam.value[column.search.key ?? handleProp(column.prop!)] =
+        column.search?.defaultValue;
+    }
+  });
 
-// 排序搜索表单项
-searchColumns.value.sort((a, b) => a.search!.order! - b.search!.order!);
+  // 排序搜索表单项
+  searchColumns.value.sort((a, b) => a.search!.order! - b.search!.order!);
+};
+makeSearchColumns();
+// 外部eolumns
+watch(
+  () => props.columns,
+  (columns) => {
+    flatColumns.value = flatColumnsFunc(columns);
+    tableRef.value?.doLayout();
+    makeSearchColumns();
+  },
+  {
+    deep: true,
+    immediate: true,
+  },
+);
 
 // 列设置 ==> 过滤掉不需要设置的列
 const colRef = ref();
@@ -314,10 +329,6 @@ const colSetting = tableColumns.value!.filter(
     item.prop !== "operation" &&
     item.isShow,
 );
-
-watch(tableColumns, (tableColumns) => {
-  console.log("old", tableColumns);
-});
 
 const openColSetting = () => colRef.value.openColSetting();
 

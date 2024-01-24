@@ -22,8 +22,8 @@
             <SearchFormItem :column="item" :search-param="searchParam" />
           </el-form-item>
         </GridItem>
-        <GridItem  suffix>
-            <div class="operation">
+        <GridItem suffix>
+          <div class="operation">
             <el-button
               :loading="loadingVisible"
               type="primary"
@@ -45,7 +45,7 @@
                 <component :is="collapsed ? ArrowDown : ArrowUp"></component>
               </el-icon>
             </el-button>
-            </div>
+          </div>
         </GridItem>
       </Grid>
     </el-form>
@@ -53,7 +53,7 @@
 </template>
 
 <script setup lang="tsx" name="SearchForm">
-import { computed, onMounted, ref, toRef } from "vue";
+import { computed, watch, onMounted, ref, toRef } from "vue";
 import { ColumnProps } from "../ProTable/interface";
 import { BreakPoint } from "../Grid/interface";
 import { Delete, Search, ArrowDown, ArrowUp } from "@element-plus/icons-vue";
@@ -105,7 +105,7 @@ const submitSearch = () => {
 
 defineExpose({
   submitSearch,
-  formEl:formRef,
+  formEl: formRef,
 });
 
 // 判断是否显示 展开/合并 按钮

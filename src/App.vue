@@ -2,7 +2,9 @@
 // import GridTest from './components/Grid/test.vue';
 // import SearchFormTest from './components/SearchForm/test.vue';
 import { ProTable } from "packages/ProTable/index";
+import locale from "element-plus/dist/locale/zh-cn.mjs"; //引入element-plus中文包
 import { getUserList } from "@/api/index";
+
 import {
   ColumnProps,
   HeaderRenderScope,
@@ -17,7 +19,7 @@ import {
   Refresh,
   More,
 } from "@element-plus/icons-vue";
-import { ref, reactive, computed } from "vue";
+import { ref, toRaw, toValue, reactive, computed } from "vue";
 
 interface ResUserList {
   id: string;
@@ -51,14 +53,14 @@ const headerRender = (scope: HeaderRenderScope<ResUserList>) => {
     </el-button>
   );
 };
-const enumData = ref([])
+const enumData = ref([]);
 
 setTimeout(() => {
   enumData.value = [
     { genderLabel: "男", genderValue: 1 },
     { genderLabel: "女", genderValue: 2 },
-  ]
-},4000)
+  ];
+}, 4000);
 // 当前选中的数据
 const selected = computed(() => proTable.value?.selectedList);
 console.log("Protable暴露出来的属性和方法", proTable);
@@ -273,8 +275,7 @@ const expandChange = (row) => {
 </script>
 
 <template>
-  <el-config-provider size="small" >
-    <div class="content-box">
+  <div class="content-box">
     <ProTable
       ref="proTable"
       title="用户列表"
@@ -364,8 +365,6 @@ const expandChange = (row) => {
     </ProTable>
     <div>{{ selected }}</div>
   </div>
-  </el-config-provider>
 </template>
 
-<style>
-</style>
+<style></style>

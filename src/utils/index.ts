@@ -1,5 +1,5 @@
 import { FieldNamesProps } from "@/components/ProTable/interface";
-
+import {isRef} from 'vue';
 /**
  * @description 处理 prop 为多级嵌套的情况，返回的数据 (列如: prop: user.name)
  * @param {Object} row 当前行数据
@@ -38,6 +38,8 @@ export function filterEnum(callValue: any, enumData?: any, fieldNames?: FieldNam
   let filterData: { [key: string]: any } = {};
   // 判断 enumData 是否为数组
   if (Array.isArray(enumData)) filterData = findItemNested(enumData, callValue, value, children);
+  if (isRef(enumData)) filterData = findItemNested(enumData.value, callValue, value, children);
+
   // 判断是否输出的结果为 tag 类型
   if (type == "tag") {
     return filterData?.tagType ? filterData.tagType : "";

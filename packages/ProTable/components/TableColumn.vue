@@ -21,19 +21,18 @@ import {
 defineProps<{ column: ColumnProps }>();
 
 const slots = useSlots(); //获取父组件的插槽
-console.log("useSlots", slots);
+  console.log("useSlots", slots);
 
-const enumMap = inject("enumMap", ref(new Map()));
-console.log("enumMap", enumMap);
+  const enumMap = inject("enumMap", ref(new Map()));
 
-// 渲染表格数据
-const renderCellData = (item: ColumnProps, scope: RenderScope<any>) => {
-  return enumMap.value.get(item.prop) && item.isFilterEnum
-    ? filterEnum(
-        handleRowAccordingToProp(scope.row, item.prop!),
-        enumMap.value.get(item.prop)!,
-        item.fieldNames,
-      )
+  // 渲染表格数据
+  const renderCellData = (item: ColumnProps, scope: RenderScope<any>) => {
+    return enumMap.value.get(item.prop) && item.isFilterEnum
+         ? filterEnum(
+           handleRowAccordingToProp(scope.row, item.prop!),
+           enumMap.value.get(item.prop)!,
+           item.fieldNames,
+         )
     : formatValue(handleRowAccordingToProp(scope.row, item.prop!));
   //filterEnum: 性别标识为 0/1，显示为男、女
   //handleRowAccordingToProp：返回嵌套的最终结果，eg：user.name 返回 name
@@ -92,10 +91,11 @@ const RenderTableColumn = <T,>(item: ColumnProps,props) => {
     <>
     {item.isShow && (
       <el-table-column
-      {...item}
       {...filterObj}
+      {...item}
+
       align={item.align ?? "center"}
-          showOverflowTooltip={
+      showOverflowTooltip={
             item.showOverflowTooltip ?? item.prop !== "operation"
           }
         >

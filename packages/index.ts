@@ -7,14 +7,15 @@
 
 import { App, Plugin } from 'vue';
 import {ProTablePlugin} from "packages/ProTable";
-// import 'element-plus/dist/index.css'
+import {provideGlobalConfig} from "@/hooks/useGlobalConfig";
 
 // import SearchForm from "./SearchForm/index.vue";
 // import Grid from "./Grid/index.vue";
 
 const SdVue3Components: Plugin<any[]> = {
-  install(app: App) {
+  install(app: App,options) {
     ProTablePlugin.install?.(app);
+    if (options) provideGlobalConfig(options, app, true)
   },
 };
 
@@ -22,3 +23,4 @@ export default SdVue3Components;
 export * from "./ProTable";
 export * from "@/hooks/useTable";
 export * from "@/hooks/useSelection"
+export * from "./ConfigProvider";
