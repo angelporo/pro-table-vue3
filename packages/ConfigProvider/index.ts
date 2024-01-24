@@ -43,7 +43,7 @@ export const configProviderProps = {
 
 export const messageConfig: MessageConfigContext = {}
 
-const ConfigProvider = defineComponent({
+export const ConfigProvider = defineComponent({
   name: 'ElConfigProvider',
   props: configProviderProps,
 

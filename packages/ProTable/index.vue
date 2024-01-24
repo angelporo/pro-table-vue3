@@ -1,52 +1,48 @@
 <template>
   <!-- 查询表单 card -->
-  <el-config-provider :locale="config.locale">
-    <SearchForm
-      v-show="isShowSearch"
-      :search="search"
-      :reset="reset"
-      :loadingVisible="loading || loadingVisible"
-      ref="searchRef"
-      :columns="searchColumns"
-      :search-param="searchParam"
-      :search-col="searchCol"
-    />
+  <SearchForm
+    v-show="isShowSearch"
+    :search="search"
+    :reset="reset"
+    :loadingVisible="loading || loadingVisible"
+    ref="searchRef"
+    :columns="searchColumns"
+    :search-param="searchParam"
+    :search-col="searchCol"
+  />
 
-    <!-- 表格内容 card -->
-    <div class="no-card pro-table">
-      <!-- 表格头部 操作按钮 -->
-      <div class="table-header">
-        <div class="header-button-lf">
-          <!-- selectedList（当前选择的数据）、selectedListIds（当前选择的数据id）、isSelected（当前是否选中的数据） -->
-          <slot
-            name="tableHeader"
-            :selected-list-ids="selectedListIds"
-            :selected-list="selectedList"
-            :is-selected="isSelected"
-          />
-        </div>
-        <div v-if="toolButton" class="header-button-ri">
-          <slot name="toolButton">
-            <el-button
-              :icon="Refresh"
-              circle
-              @click="searchRef?.submitSearch"
-            />
-            <el-button
-              v-if="columns.length"
-              :icon="Operation"
-              circle
-              @click="openColSetting"
-            />
-            <el-button
-              v-if="searchColumns.length"
-              :icon="Search"
-              circle
-              @click="isShowSearch = !isShowSearch"
-            />
-          </slot>
-        </div>
+  <!-- 表格内容 card -->
+  <div class="no-card pro-table">
+    <!-- 表格头部 操作按钮 -->
+    <div class="table-header">
+      <div class="header-button-lf">
+        <!-- selectedList（当前选择的数据）、selectedListIds（当前选择的数据id）、isSelected（当前是否选中的数据） -->
+        <slot
+          name="tableHeader"
+          :selected-list-ids="selectedListIds"
+          :selected-list="selectedList"
+          :is-selected="isSelected"
+        />
       </div>
+      <div v-if="toolButton" class="header-button-ri">
+        <slot name="toolButton">
+          <el-button :icon="Refresh" circle @click="searchRef?.submitSearch" />
+          <el-button
+            v-if="columns.length"
+            :icon="Operation"
+            circle
+            @click="openColSetting"
+          />
+          <el-button
+            v-if="searchColumns.length"
+            :icon="Search"
+            circle
+            @click="isShowSearch = !isShowSearch"
+          />
+        </slot>
+      </div>
+    </div>
+    <el-config-provider :locale="config.locale">
       <!-- 表格主体 -->
       <el-table
         ref="tableRef"

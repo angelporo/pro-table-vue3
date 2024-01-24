@@ -25,6 +25,10 @@ export function useGlobalConfig<
 export function useGlobalConfig(): Ref<ConfigProviderContext>
 
 
+function keysOf(obj) {
+  return Object.keys(obj);
+}
+
 export function useGlobalConfig(
   key?: keyof ConfigProviderContext,
   defaultValue = undefined
@@ -38,6 +42,19 @@ export function useGlobalConfig(
     return config
   }
 }
+
+const mergeConfig = (
+  a: ConfigProviderContext,
+  b: ConfigProviderContext
+): ConfigProviderContext => {
+  const keys = [...new Set([...keysOf(a), ...keysOf(b)])]
+  const obj: Record<string, any> = {}
+  for (const key of keys) {
+    obj[key] = b[key] ?? a[key]
+  }
+  return obj
+}
+
 
 export const provideGlobalConfig = (
   config: MaybeRef<ConfigProviderContext>,
@@ -55,7 +72,6 @@ export const provideGlobalConfig = (
     )
     return
   }
-  console.log("config",config)
   const context = computed(() => {
     const cfg = unref(config)
     if (!oldConfig?.value) return cfg
@@ -70,6 +86,7 @@ export const provideGlobalConfig = (
   if (global || !globalConfig.value) {
     globalConfig.value = context.value
   }
+  console.log('context',context)
   return context
 }
 
