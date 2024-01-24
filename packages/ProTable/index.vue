@@ -114,6 +114,7 @@
     <!-- 列设置：右侧抽屉组件 -->
     <ColSetting
       v-if="toolButton"
+      @changeColIndex="changeColIndex"
       ref="colRef"
       v-model:col-setting="colSetting"
     />
@@ -331,6 +332,11 @@ const colSetting = tableColumns.value!.filter(
 );
 
 const openColSetting = () => colRef.value.openColSetting();
+
+const changeColIndex = (arr:object[])=>{
+  const tem = tableColumns.value.filter(({type})=>["selection", "index", "expand"].includes(type))
+  tableColumns.value = [...tem,...arr]
+}
 
 // 暴露给父组件的参数和方法(外部需要什么，都可以从这里暴露出去)
 defineExpose({

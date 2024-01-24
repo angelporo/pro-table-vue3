@@ -63,11 +63,11 @@
 </template>
 
 <script setup lang="ts" name="ColSetting">
-import { ref, watch, nextTick, onMounted } from "vue";
+import { ref, watch, nextTick, onMounted,defineEmits  } from "vue";
 import Sortable from "sortablejs";
 import { Grid } from "@element-plus/icons-vue";
 import { ColumnProps } from "@/components/ProTable/interface";
-
+const emit = defineEmits(['changeColIndex'])
 const TableRef = ref();
 
 const props = withDefaults(defineProps<{ colSetting: ColumnProps[] }>(), {
@@ -86,13 +86,14 @@ const initDropTable = () => {
       console.log(oldIndex);
       const currRow = props.colSetting?.splice(oldIndex, 1)[0];
       props.colSetting?.splice(newIndex, 0, currRow);
-      sortIndex();
+      const arr = sortIndex();
+      emit('changeColIndex',arr)
     },
   });
 };
 
 const sortIndex = () => {
-  const array = [];
+  const array:object[] = [];
   props.colSetting.forEach((e, i) => {
     const obj = {
       index: i + 1,
@@ -100,7 +101,7 @@ const sortIndex = () => {
     };
     array.push(obj);
   });
-  console.log("array", array);
+  return array
 };
 
 onMounted(() => {
