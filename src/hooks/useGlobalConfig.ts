@@ -66,7 +66,7 @@ export const provideGlobalConfig = (
 
   const provideFn = app?.provide ?? (inSetup ? provide : undefined)
   if (!provideFn) {
-    debugWarn(
+    console.warning(
       'provideGlobalConfig',
       'provideGlobalConfig() can only be used inside setup().'
     )

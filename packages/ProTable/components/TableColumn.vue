@@ -21,18 +21,18 @@ import {
 defineProps<{ column: ColumnProps }>();
 
 const slots = useSlots(); //获取父组件的插槽
-  console.log("useSlots", slots);
+console.log("useSlots", slots);
 
-  const enumMap = inject("enumMap", ref(new Map()));
+const enumMap = inject("enumMap", ref(new Map()));
 
-  // 渲染表格数据
-  const renderCellData = (item: ColumnProps, scope: RenderScope<any>) => {
-    return enumMap.value.get(item.prop) && item.isFilterEnum
-         ? filterEnum(
-           handleRowAccordingToProp(scope.row, item.prop!),
-           enumMap.value.get(item.prop)!,
-           item.fieldNames,
-         )
+// 渲染表格数据
+const renderCellData = (item: ColumnProps, scope: RenderScope<any>) => {
+  return enumMap.value.get(item.prop) && item.isFilterEnum
+    ? filterEnum(
+        handleRowAccordingToProp(scope.row, item.prop!),
+        enumMap.value.get(item.prop)!,
+        item.fieldNames,
+      )
     : formatValue(handleRowAccordingToProp(scope.row, item.prop!));
   //filterEnum: 性别标识为 0/1，显示为男、女
   //handleRowAccordingToProp：返回嵌套的最终结果，eg：user.name 返回 name
@@ -48,14 +48,13 @@ const getTagType = (item: ColumnProps, scope: RenderScope<any>) => {
   );
 };
 
-
-const RenderTableColumn = <T,>(item: ColumnProps,props) => {
+const RenderTableColumn = <T,>(item: ColumnProps, props) => {
   let filtersObj = [];
 
-  const filterHandler = (value,row, column) => {
+  const filterHandler = (value, row, column) => {
     const property = item.prop;
-    return row[property] === value
-  }
+    return row[property] === value;
+  };
 
   const getFiltersObj = () => {
     try {
@@ -74,28 +73,26 @@ const RenderTableColumn = <T,>(item: ColumnProps,props) => {
           }));
         }
         return {
-          filters:filters,
-          filterMethod:filterHandler
-        }
+          filters: filters,
+          filterMethod: filterHandler,
+        };
       }
-      return {}
+      return {};
     } catch (err) {
-      console.log("请检查enum 和fieldnames字段")
-      return {}
+      console.log("请检查enum 和fieldnames字段");
+      return {};
     } finally {
     }
-  }
-  const filterObj = getFiltersObj()
-
+  };
+  const filterObj = getFiltersObj();
   return (
     <>
-    {item.isShow && (
-      <el-table-column
-      {...filterObj}
-      {...item}
-
-      align={item.align ?? "center"}
-      showOverflowTooltip={
+      {item.isShow && (
+        <el-table-column
+          {...filterObj}
+          {...item}
+          align={item.align ?? "center"}
+          showOverflowTooltip={
             item.showOverflowTooltip ?? item.prop !== "operation"
           }
         >

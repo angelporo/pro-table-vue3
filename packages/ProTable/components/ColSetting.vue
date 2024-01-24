@@ -1,6 +1,6 @@
 <template>
   <!-- 列设置 -->
-  <el-drawer v-model="drawerVisible" title="列设置" size="500px">
+  <el-drawer v-model="drawerVisible" title="列设置" size="600px">
     <div class="table-main">
       <el-table
         :data="colSetting"
@@ -31,6 +31,7 @@
         >
           <el-switch v-model="scope.row.isShow"></el-switch>
         </el-table-column>
+
         <el-table-column
           v-slot="scope"
           prop="sortable"
@@ -42,25 +43,19 @@
             v-model="scope.row.sortable"
           ></el-switch>
         </el-table-column>
+
         <el-table-column
           v-slot="scope"
           prop="sortable"
           align="center"
+          width="220"
           label="冻结列"
         >
-            <el-switch
-          inline-prompt
-          v-model="scope.row.fixedLeft"
-          active-text="左"
-          inactive-text="左"
-        />
-        <br>
-        <el-switch
-          inline-prompt
-          v-model="scope.row.fixedRight"
-          active-text="右"
-          inactive-text="右"
-        />
+          <el-radio-group v-model="scope.row.fixed">
+            <el-radio label="left">左</el-radio>
+            <el-radio label="rights">右</el-radio>
+            <el-radio :label="false">取消</el-radio>
+          </el-radio-group>
         </el-table-column>
 
         <template #empty>
@@ -75,11 +70,11 @@
 </template>
 
 <script setup lang="ts" name="ColSetting">
-import { ref, watch, nextTick, onMounted,defineEmits  } from "vue";
+import { ref, watch, nextTick, onMounted, defineEmits } from "vue";
 import Sortable from "sortablejs";
 import { Grid } from "@element-plus/icons-vue";
 import { ColumnProps } from "@/components/ProTable/interface";
-const emit = defineEmits(['changeColIndex'])
+const emit = defineEmits(["changeColIndex"]);
 const TableRef = ref();
 
 const props = withDefaults(defineProps<{ colSetting: ColumnProps[] }>(), {
@@ -88,7 +83,7 @@ const props = withDefaults(defineProps<{ colSetting: ColumnProps[] }>(), {
 const drawerVisible = ref<boolean>(false);
 
 const sortIndex = () => {
-  const array:object[] = [];
+  const array: object[] = [];
   props.colSetting.forEach((e, i) => {
     const obj = {
       index: i + 1,
@@ -96,7 +91,7 @@ const sortIndex = () => {
     };
     array.push(obj);
   });
-  return array
+  return array;
 };
 
 const initDropTable = () => {
@@ -111,12 +106,10 @@ const initDropTable = () => {
       const currRow = props.colSetting?.splice(oldIndex, 1)[0];
       props.colSetting?.splice(newIndex, 0, currRow);
       const arr = sortIndex();
-      emit('changeColIndex',arr)
+      emit("changeColIndex", arr);
     },
   });
 };
-
-
 
 onMounted(() => {
   nextTick(() => {

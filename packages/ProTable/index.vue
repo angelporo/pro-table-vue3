@@ -1,48 +1,52 @@
 <template>
   <!-- 查询表单 card -->
-  <SearchForm
-    v-show="isShowSearch"
-    :search="search"
-    :reset="reset"
-    :loadingVisible="loading || loadingVisible"
-    ref="searchRef"
-    :columns="searchColumns"
-    :search-param="searchParam"
-    :search-col="searchCol"
-  />
+  <el-config-provider :locale="config?.locale">
+    <SearchForm
+      v-show="isShowSearch"
+      :search="search"
+      :reset="reset"
+      :loadingVisible="loading || loadingVisible"
+      ref="searchRef"
+      :columns="searchColumns"
+      :search-param="searchParam"
+      :search-col="searchCol"
+    />
 
-  <!-- 表格内容 card -->
-  <div class="no-card pro-table">
-    <!-- 表格头部 操作按钮 -->
-    <div class="table-header">
-      <div class="header-button-lf">
-        <!-- selectedList（当前选择的数据）、selectedListIds（当前选择的数据id）、isSelected（当前是否选中的数据） -->
-        <slot
-          name="tableHeader"
-          :selected-list-ids="selectedListIds"
-          :selected-list="selectedList"
-          :is-selected="isSelected"
-        />
-      </div>
-      <div v-if="toolButton" class="header-button-ri">
-        <slot name="toolButton">
-          <el-button :icon="Refresh" circle @click="searchRef?.submitSearch" />
-          <el-button
-            v-if="columns.length"
-            :icon="Operation"
-            circle
-            @click="openColSetting"
+    <!-- 表格内容 card -->
+    <div class="no-card pro-table">
+      <!-- 表格头部 操作按钮 -->
+      <div class="table-header">
+        <div class="header-button-lf">
+          <!-- selectedList（当前选择的数据）、selectedListIds（当前选择的数据id）、isSelected（当前是否选中的数据） -->
+          <slot
+            name="tableHeader"
+            :selected-list-ids="selectedListIds"
+            :selected-list="selectedList"
+            :is-selected="isSelected"
           />
-          <el-button
-            v-if="searchColumns.length"
-            :icon="Search"
-            circle
-            @click="isShowSearch = !isShowSearch"
-          />
-        </slot>
+        </div>
+        <div v-if="toolButton" class="header-button-ri">
+          <slot name="toolButton">
+            <el-button
+              :icon="Refresh"
+              circle
+              @click="searchRef?.submitSearch"
+            />
+            <el-button
+              v-if="columns.length"
+              :icon="Operation"
+              circle
+              @click="openColSetting"
+            />
+            <el-button
+              v-if="searchColumns.length"
+              :icon="Search"
+              circle
+              @click="isShowSearch = !isShowSearch"
+            />
+          </slot>
+        </div>
       </div>
-    </div>
-    <el-config-provider :locale="config.locale">
       <!-- 表格主体 -->
       <el-table
         ref="tableRef"
@@ -97,6 +101,7 @@
           </div>
         </template>
       </el-table>
+
       <!-- 分页组件 -->
       <slot name="pagination">
         <Pagination
@@ -132,7 +137,7 @@ import SearchForm from "packages/SearchForm/index.vue";
 import Pagination from "./components/Pagination.vue";
 import ColSetting from "./components/ColSetting.vue";
 import TableColumn from "./components/TableColumn.vue";
-
+import { ElConfigProvider } from "element-plus";
 export interface ProTableProps {
   columns: ColumnProps[]; // 列配置项  ==> 必传
   data?: any[]; // 静态 table data 数据，若存在则不会使用 requestApi 返回的 data ==> 非必传
@@ -154,7 +159,7 @@ const config = useGlobalConfig();
 console.log("global config", config);
 /**
  * @description 接受父组件参数，配置默认值
-*/
+ */
 const props = withDefaults(defineProps<ProTableProps>(), {
   columns: () => [],
   requestAuto: true,
@@ -169,24 +174,24 @@ const props = withDefaults(defineProps<ProTableProps>(), {
 
 /**
  * @description 是否显示搜索模块
-*/
+ */
 const isShowSearch = ref(true);
 
 /**
  * @description 表格 DOM 元素: ProTable 组件内部暴露了 el-table DOM，可通过 proTable.value.element.方法名 调用其方法
- */ 
+ */
 const tableRef = ref<InstanceType<typeof ElTable>>();
 
 /**
  * @description 表格多选 Hooks
-*/
+ */
 const { selectionChange, selectedList, selectedListIds, isSelected } =
   useSelection(props.rowKey);
 const searchRef = ref();
 
 /**
  * @description 表格操作 Hooks
-*/
+ */
 const tableProps = useProTable({
   api: props.requestApi,
   initParam: props.initParam,
@@ -208,7 +213,7 @@ const {
 } = tableProps;
 /**
  * @description 清空选中数据列表
-*/
+ */
 const clearSelection = () => tableRef.value!.clearSelection();
 // 初始化请求
 onMounted(() => {
@@ -220,13 +225,13 @@ watch(() => props.initParam, getTableList, { deep: true });
 
 /**
  * @description 接收 columns 并设置为响应式
-*/
+ */
 const tableColumns = ref<ColumnProps[]>(props.columns);
 console.log(tableColumns.value);
 
 /**
  * @description 定义 enumMap 存储 enum 值（避免异步请求无法格式化单元格内容 || 无法填充搜索下拉选择）
-*/
+ */
 const enumMap = ref(new Map<string, { [key: string]: any }[]>());
 
 provide("enumMap", enumMap);
@@ -234,7 +239,9 @@ provide("enumMap", enumMap);
 const setEnumMap = async (col: ColumnProps) => {
   if (!col.enum) return;
   // 如果当前 enum 为后台数据需要请求数据，则调用该请求接口，并存储到 enumMap
-  if (typeof col.enum !== "function") {return enumMap.value.set(col.prop!, col.enum!)}
+  if (typeof col.enum !== "function") {
+    return enumMap.value.set(col.prop!, col.enum!);
+  }
   const { data } = await col.enum();
   enumMap.value.set(col.prop!, data);
 };
@@ -254,9 +261,8 @@ const flatColumnsFunc = (
     col.isShow = col.isShow ?? true;
     col.isFilterEnum = col.isFilterEnum ?? true;
     col.isTableSort = col.isTableSort ?? true;
-    // col.fixed = col.fixed=='left' ?   ? false;
-    // col.sortIndex = index ?? col.fixed;
-    col.fixed=='left' ? col.fixedLeft=true : col.fixed=='right' ? col.fixdRight= true : null;
+    col.fixed = col.fixed ?? false;
+    col.sortIndex = index ?? col.fixed;
     // 设置 enumMap
     setEnumMap(col);
   });
@@ -269,7 +275,7 @@ flatColumns.value = flatColumnsFunc(tableColumns.value);
 
 /**
  * @description 过滤需要搜索的配置项
-*/
+ */
 const searchColumns = ref(
   flatColumns.value.filter?.((item) => item.search?.el || item.search?.render),
 );
@@ -347,26 +353,17 @@ const colSetting = tableColumns.value!.filter(
     item.isShow,
 );
 
-watch(colSetting,(newVal)=>{
-  newVal.map((item)=>{
-    for (const iterator of props.columns) {
-      if(item.prop == iterator.prop){
-        iterator.fixed = item.fixedLeft ? 'left' : item.fixedRight ? 'right' : false
-        return
-      }
-    }
-  })
-})
-
 const openColSetting = () => colRef.value.openColSetting();
 /**
  * @description 拖拽列响应函数
  * @param {array} 整体配置
-*/
-const changeColIndex = (arr:object[])=>{
-  const tem = tableColumns.value.filter(({type})=>["selection", "index", "expand"].includes(type))
-  tableColumns.value = [...tem,...arr]
-}
+ */
+const changeColIndex = (arr: object[]) => {
+  const tem = tableColumns.value.filter(({ type }) =>
+    ["selection", "index", "expand"].includes(type),
+  );
+  tableColumns.value = [...tem, ...arr];
+};
 
 // 暴露给父组件的参数和方法(外部需要什么，都可以从这里暴露出去)
 defineExpose({
