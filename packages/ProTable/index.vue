@@ -335,7 +335,12 @@ watch(
   () => props.columns,
   (columns) => {
     flatColumns.value = flatColumnsFunc(columns);
-    tableRef.value?.doLayout();
+    /**
+     * @description  不需要dolayout 也可以刷新内容
+     * @default
+     * @title
+     */
+    // tableRef.value?.doLayout();
     makeSearchColumns();
   },
   {
