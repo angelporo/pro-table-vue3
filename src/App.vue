@@ -61,6 +61,7 @@ setTimeout(() => {
     { genderLabel: "女", genderValue: 2 },
   ];
 }, 4000);
+
 // 当前选中的数据
 const selected = computed(() => proTable.value?.selectedList);
 console.log("Protable暴露出来的属性和方法", proTable);
@@ -75,7 +76,6 @@ const dataCallback = (data: any) => {
     current: data.current,
     size: data.size,
   };
-  console.log("data", result);
   return result;
 };
 
@@ -138,7 +138,13 @@ const columns: ColumnProps<ResUserList>[] = [
     ],
     enum: enumData,
     // 字典请求携带参数
-    // enum: () => getUserGender({ id: 1 }),
+    // enum: () =>
+    //   Promise.resolve({
+    //     data: [
+    //       { genderLabel: "男", genderValue: 1 },
+    //       { genderLabel: "女", genderValue: 2 },
+    //     ],
+    //   }),
     search: { el: "select", props: { filterable: true } },
     fieldNames: { label: "genderLabel", value: "genderValue" },
   },
