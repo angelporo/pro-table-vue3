@@ -156,7 +156,9 @@ export interface ProTableProps {
 }
 const config = useGlobalConfig();
 console.log("global config", config);
-// 接受父组件参数，配置默认值
+/**
+ * @description 接受父组件参数，配置默认值
+*/
 const props = withDefaults(defineProps<ProTableProps>(), {
   columns: () => [],
   requestAuto: true,
@@ -169,18 +171,26 @@ const props = withDefaults(defineProps<ProTableProps>(), {
   searchCol: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }),
 });
 
-// 是否显示搜索模块
+/**
+ * @description 是否显示搜索模块
+*/
 const isShowSearch = ref(true);
 
-// 表格 DOM 元素: ProTable 组件内部暴露了 el-table DOM，可通过 proTable.value.element.方法名 调用其方法
+/**
+ * @description 表格 DOM 元素: ProTable 组件内部暴露了 el-table DOM，可通过 proTable.value.element.方法名 调用其方法
+ */ 
 const tableRef = ref<InstanceType<typeof ElTable>>();
 
-// 表格多选 Hooks
+/**
+ * @description 表格多选 Hooks
+*/
 const { selectionChange, selectedList, selectedListIds, isSelected } =
   useSelection(props.rowKey);
 const searchRef = ref();
 
-// 表格操作 Hooks
+/**
+ * @description 表格操作 Hooks
+*/
 const tableProps = useProTable({
   api: props.requestApi,
   initParam: props.initParam,
@@ -200,7 +210,9 @@ const {
   handleSizeChange,
   handleCurrentChange,
 } = tableProps;
-// 清空选中数据列表
+/**
+ * @description 清空选中数据列表
+*/
 const clearSelection = () => tableRef.value!.clearSelection();
 // 初始化请求
 onMounted(() => {
@@ -210,11 +222,15 @@ onMounted(() => {
 // 监听页面 initParam 改化，重新获取表格数据
 watch(() => props.initParam, getTableList, { deep: true });
 
-// 接收 columns 并设置为响应式
+/**
+ * @description 接收 columns 并设置为响应式
+*/
 const tableColumns = ref<ColumnProps[]>(props.columns);
 console.log(tableColumns.value);
 
-// 定义 enumMap 存储 enum 值（避免异步请求无法格式化单元格内容 || 无法填充搜索下拉选择）
+/**
+ * @description 定义 enumMap 存储 enum 值（避免异步请求无法格式化单元格内容 || 无法填充搜索下拉选择）
+*/
 const enumMap = ref(new Map<string, { [key: string]: any }[]>());
 
 provide("enumMap", enumMap);
@@ -227,7 +243,9 @@ const setEnumMap = async (col: ColumnProps) => {
   enumMap.value.set(col.prop!, data);
 };
 
-// 扁平化 columns
+/**
+ * @description 扁平化 columns
+ */
 const flatColumnsFunc = (
   columns: ColumnProps[],
   flatArr: ColumnProps[] = [],
@@ -253,7 +271,9 @@ const flatColumnsFunc = (
 const flatColumns = ref<ColumnProps[]>();
 flatColumns.value = flatColumnsFunc(tableColumns.value);
 
-// 过滤需要搜索的配置项
+/**
+ * @description 过滤需要搜索的配置项
+*/
 const searchColumns = ref(
   flatColumns.value.filter?.((item) => item.search?.el || item.search?.render),
 );
