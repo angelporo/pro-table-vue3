@@ -70,8 +70,6 @@
 </template>
 
 <script setup lang="ts" name="ColSetting">
-
-// @ts-nocheck
 import { ref, watch, nextTick, onMounted, defineEmits, watchEffect } from "vue";
 import Sortable from "sortablejs";
 import { Grid } from "@element-plus/icons-vue";
