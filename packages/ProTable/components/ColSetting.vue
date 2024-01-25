@@ -92,6 +92,7 @@ const initDropTable = () => {
     handle: ".el-table__row", // 设置指定列作为拖拽
     onEnd(evt: any) {
       const { newIndex, oldIndex } = evt;
+
       console.log(newIndex);
       console.log(oldIndex);
       const currRow = props.colSetting?.splice(oldIndex, 1)[0];
