@@ -297,7 +297,7 @@ watch(
     initSearchCol?.forEach((item) => {
       if (isFunction(item?.columns)) {
         const resultArr = item?.columns({ searchParam: searchParam });
-        resultArr?.forEach((n) => {
+        resultArr?.forEach((n) => { 
           arr.push(n);
         });
       }

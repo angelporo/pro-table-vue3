@@ -70,7 +70,9 @@
 </template>
 
 <script setup lang="ts" name="ColSetting">
-import { ref, watch, nextTick, onMounted, defineEmits } from "vue";
+
+// @ts-nocheck
+import { ref, watch, nextTick, onMounted, defineEmits, watchEffect } from "vue";
 import Sortable from "sortablejs";
 import { Grid } from "@element-plus/icons-vue";
 import { ColumnProps } from "@/components/ProTable/interface";
@@ -93,11 +95,13 @@ const sortIndex = () => {
   });
   return array;
 };
-
+let sortablehandle
 const initDropTable = () => {
   if (!TableRef.value) return;
+
   const el = TableRef.value.$el.querySelector(".el-table__body tbody");
-  Sortable.create(el, {
+  sortablehandle?.destroy();
+  sortablehandle = Sortable.create(el, {
     handle: ".el-table__row", // 设置指定列作为拖拽
     onEnd(evt: any) {
       const { newIndex, oldIndex } = evt;
@@ -110,16 +114,15 @@ const initDropTable = () => {
     },
   });
 };
-
-onMounted(() => {
-  nextTick(() => {
-    watch(props.colSetting, (colSetting, oldcolSetting) => {
-      if (colSetting?.length) {
+watchEffect(()=>{
+  if(drawerVisible.value){
+    nextTick(() => {
+      if(props.colSetting?.length){
         initDropTable();
       }
-    });
   });
-});
+  }
+})
 
 const openColSetting = () => {
   drawerVisible.value = true;
