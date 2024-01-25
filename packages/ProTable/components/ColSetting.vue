@@ -82,17 +82,6 @@ const props = withDefaults(defineProps<{ colSetting: ColumnProps[] }>(), {
 });
 const drawerVisible = ref<boolean>(false);
 
-const sortIndex = () => {
-  const array: object[] = [];
-  props.colSetting.forEach((e, i) => {
-    const obj = {
-      index: i + 1,
-      ...e,
-    };
-    array.push(obj);
-  });
-  return array;
-};
 let sortablehandle;
 const initDropTable = () => {
   if (!TableRef.value) return;
@@ -107,8 +96,7 @@ const initDropTable = () => {
       console.log(oldIndex);
       const currRow = props.colSetting?.splice(oldIndex, 1)[0];
       props.colSetting?.splice(newIndex, 0, currRow);
-      const arr = sortIndex();
-      emit("changeColIndex", arr);
+      emit("changeColIndex", props.colSetting);
     },
   });
 };
