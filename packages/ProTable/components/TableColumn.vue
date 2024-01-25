@@ -16,7 +16,7 @@ import {
   formatValue,
   handleProp,
   handleRowAccordingToProp,
-} from "@/utils";
+} from "packages/utils";
 
 defineProps<{ column: ColumnProps }>();
 

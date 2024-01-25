@@ -1,6 +1,6 @@
 import { App, Plugin,provide } from 'vue';
 import ProTable from  "packages/ProTable/index.vue"
-import { withInstall } from '@/utils/install'
+import { withInstall } from 'packages/utils/install'
 
 export const ProTablePlugin: Plugin = withInstall(ProTable)
 // {

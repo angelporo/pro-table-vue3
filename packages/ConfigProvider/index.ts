@@ -1,5 +1,5 @@
 import { defineComponent, renderSlot, watch } from 'vue'
-import { provideGlobalConfig } from '@/hooks/useGlobalConfig'
+import { provideGlobalConfig } from 'packages/hooks/useGlobalConfig'
 
 import type { MessageConfigContext } from '@element-plus/components/message'
 export const definePropType = <T>(val: any): PropType<T> => val

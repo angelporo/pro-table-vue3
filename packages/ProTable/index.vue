@@ -125,14 +125,14 @@
 <script setup lang="ts" name="ProTable">
 import { ref, computed, nextTick, watch, provide, onMounted } from "vue";
 import { ElTable } from "element-plus";
-import { useProTable } from "@/hooks/useTable";
-import { useSelection } from "@/hooks/useSelection";
-import { useGlobalConfig } from "@/hooks/useGlobalConfig";
+import { useProTable } from "packages/hooks/useTable";
+import { useSelection } from "packages/hooks/useSelection";
+import { useGlobalConfig } from "packages/hooks/useGlobalConfig";
 import { BreakPoint } from "packages/Grid/interface";
 import { isFunction } from "lodash";
 import { ColumnProps } from "packages/ProTable/interface";
 import { Refresh, Operation, Search } from "@element-plus/icons-vue";
-import { handleProp } from "@/utils";
+import { handleProp } from "packages/utils";
 import SearchForm from "packages/SearchForm/index.vue";
 import Pagination from "./components/Pagination.vue";
 import ColSetting from "./components/ColSetting.vue";

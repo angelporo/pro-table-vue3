@@ -32,7 +32,7 @@
 
 <script setup lang="ts" name="SearchFormItem">
 import { computed, isRef, onMounted, inject, ref } from "vue";
-import { handleProp } from "@/utils";
+import { handleProp } from "packages/utils";
 import { ColumnProps } from "packages/ProTable/interface";
 
 interface SearchFormItem {
