@@ -71,9 +71,9 @@
 
 <script setup lang="ts" name="ColSetting">
 import { ref, watch, nextTick, onMounted, defineEmits, watchEffect } from "vue";
-import Sortable from "sortablejs";
+import Sortablejs from "sortablejs";
 import { Grid } from "@element-plus/icons-vue";
-import { ColumnProps } from "@/components/ProTable/interface";
+import { ColumnProps } from "packages/ProTable/interface";
 const emit = defineEmits(["changeColIndex"]);
 const TableRef = ref();
 
@@ -93,13 +93,13 @@ const sortIndex = () => {
   });
   return array;
 };
-let sortablehandle
+let sortablehandle;
 const initDropTable = () => {
   if (!TableRef.value) return;
 
   const el = TableRef.value.$el.querySelector(".el-table__body tbody");
   sortablehandle?.destroy();
-  sortablehandle = Sortable.create(el, {
+  sortablehandle = Sortablejs.create(el, {
     handle: ".el-table__row", // 设置指定列作为拖拽
     onEnd(evt: any) {
       const { newIndex, oldIndex } = evt;
@@ -112,15 +112,15 @@ const initDropTable = () => {
     },
   });
 };
-watchEffect(()=>{
-  if(drawerVisible.value){
+watchEffect(() => {
+  if (drawerVisible.value) {
     nextTick(() => {
-      if(props.colSetting?.length){
+      if (props.colSetting?.length) {
         initDropTable();
       }
-  });
+    });
   }
-})
+});
 
 const openColSetting = () => {
   drawerVisible.value = true;
