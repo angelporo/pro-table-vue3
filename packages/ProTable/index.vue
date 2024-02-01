@@ -27,23 +27,29 @@
         </div>
         <div v-if="toolButton" class="header-button-ri">
           <slot name="toolButton">
-            <el-button
-              :icon="Refresh"
-              circle
-              @click="searchRef?.submitSearch"
-            />
-            <el-button
-              v-if="columns.length"
-              :icon="Operation"
-              circle
-              @click="openColSetting"
-            />
-            <el-button
-              v-if="searchColumns.length"
-              :icon="Search"
-              circle
-              @click="isShowSearch = !isShowSearch"
-            />
+            <el-tooltip effect="dark" content="刷新" placement="top">
+              <el-button
+                :icon="RefreshRight"
+                circle
+                @click="searchRef?.submitSearch"
+              />
+            </el-tooltip>
+            <el-tooltip effect="dark" content="设置" placement="top">
+              <el-button
+                v-if="columns.length"
+                :icon="Setting"
+                circle
+                @click="openColSetting"
+              />
+            </el-tooltip>
+            <el-tooltip effect="dark" content="切换搜索" placement="top">
+              <el-button
+                v-if="searchColumns.length"
+                :icon="Search"
+                circle
+                @click="isShowSearch = !isShowSearch"
+              />
+            </el-tooltip>
           </slot>
         </div>
       </div>
@@ -131,13 +137,14 @@ import { useGlobalConfig } from "packages/hooks/useGlobalConfig";
 import { BreakPoint } from "packages/Grid/interface";
 import { isFunction } from "lodash";
 import { ColumnProps } from "packages/ProTable/interface";
-import { Refresh, Operation, Search } from "@element-plus/icons-vue";
+import { RefreshRight, Setting, Search } from "@element-plus/icons-vue";
 import { handleProp } from "packages/utils";
 import SearchForm from "packages/SearchForm/index.vue";
 import Pagination from "./components/Pagination.vue";
 import ColSetting from "./components/ColSetting.vue";
 import TableColumn from "./components/TableColumn.vue";
 import { ElConfigProvider } from "element-plus";
+import { document } from "postcss";
 export interface ProTableProps {
   columns: ColumnProps[]; // 列配置项  ==> 必传
   data?: any[]; // 静态 table data 数据，若存在则不会使用 requestApi 返回的 data ==> 非必传
@@ -187,7 +194,6 @@ const tableRef = ref<InstanceType<typeof ElTable>>();
  */
 const { selectionChange, selectedList, selectedListIds, isSelected } =
   useSelection(props.rowKey);
-const searchRef = ref();
 
 /**
  * @description 表格操作 Hooks
@@ -201,6 +207,7 @@ const tableProps = useProTable({
 });
 const {
   tableData,
+  searchRef,
   pageable,
   searchParam,
   searchInitParam,
@@ -297,7 +304,7 @@ watch(
     initSearchCol?.forEach((item) => {
       if (isFunction(item?.columns)) {
         const resultArr = item?.columns({ searchParam: searchParam });
-        resultArr?.forEach((n) => { 
+        resultArr?.forEach((n) => {
           arr.push(n);
         });
       }

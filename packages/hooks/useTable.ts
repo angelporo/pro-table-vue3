@@ -45,6 +45,10 @@ export const useProTable = (options: useTableProps) => {
     // 总参数(包含分页和查询参数)
     totalParam: {},
     loadingVisible: false,
+    searchRef: {
+      submitSearch: () => {},
+      formEl: null,
+    },
   });
 
   /**
@@ -135,8 +139,8 @@ export const useProTable = (options: useTableProps) => {
   const updatePageable = (pageable: Table.Pageable) => {
     if (
       pageable.current === undefined ||
-        pageable.size === undefined ||
-        pageable.total === undefined
+      pageable.size === undefined ||
+      pageable.total === undefined
     )
       return;
     Object.assign(state.pageable, pageable);
@@ -146,10 +150,10 @@ export const useProTable = (options: useTableProps) => {
    * @description 表格数据查询
    * @return void
    * */
-  const search = (formEl: FormInstance | undefined) => {
-    console.log("ProTable formRef", formEl);
-    if (!formEl) return;
-    formEl.validate((valid, obj) => {
+  const search = () => {
+    console.log("ProTable formRef", state.searchRef?.formEl);
+    if (!state.searchRef?.formEl) return;
+    state.searchRef?.formEl?.validate((valid, obj) => {
       if (valid) {
         state.pageable.current = 1;
         updatedTotalParam();
@@ -174,12 +178,16 @@ export const useProTable = (options: useTableProps) => {
   const reset = () => {
     state.pageable.current = 1;
     state.searchParam = {};
-    // 重置搜索表单的时，如果有默认搜索参数，则重置默认的搜索参数
+    /**
+     * @description  重置搜索表单的时，如果有默认搜索参数，则重置默认的搜索参数
+     * @default
+     * @title
+     */
     Object.keys(state.searchInitParam).forEach((key) => {
       state.searchParam[key] = state.searchInitParam[key];
     });
     updatedTotalParam();
-    getTableList();
+    search();
   };
 
   /**

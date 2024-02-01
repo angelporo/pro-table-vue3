@@ -42,6 +42,7 @@
     "@vue/test-utils": "^2.4.0-alpha.2",
     "happy-dom": "^9.20.3",
     "less": "^4.2.0",
+    "prettier": "3.2.4",
     "typescript": "^5.0.2",
     "unplugin-auto-import": "^0.16.4",
     "unplugin-vue-components": "^0.25.1",

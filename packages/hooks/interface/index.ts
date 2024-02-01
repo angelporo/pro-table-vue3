@@ -1,13 +1,14 @@
+import type { FormInstance } from "element-plus";
 export namespace Table {
   export interface Pageable {
-    pageNum: number;
-    pageSize: number;
+    current: number;
+    size: number;
     total: number;
   }
   export interface StateProps {
     tableData: any[];
     pageable: Pageable;
-    loadingVisible:boolean;
+    loadingVisible: boolean;
     searchParam: {
       [key: string]: any;
     };
@@ -19,6 +20,10 @@ export namespace Table {
     };
     icon?: {
       [key: string]: any;
+    };
+    searchRef: {
+      formEl: FormInstance | null;
+      submitSearch: () => void;
     };
   }
 }

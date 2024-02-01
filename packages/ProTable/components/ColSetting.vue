@@ -70,7 +70,7 @@
 </template>
 
 <script setup lang="ts" name="ColSetting">
-import { ref, watch, nextTick, onMounted, defineEmits, watchEffect } from "vue";
+ import { ref,  nextTick,  watchEffect } from "vue";
 import Sortablejs from "sortablejs";
 import { Grid } from "@element-plus/icons-vue";
 import { ColumnProps } from "packages/ProTable/interface";

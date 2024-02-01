@@ -27,12 +27,11 @@
             <el-button
               :loading="loadingVisible"
               type="primary"
-              :icon="Search"
               @click="submitSearch"
             >
-              搜索
+              查询
             </el-button>
-            <el-button :icon="Delete" @click="reset"> 重置 </el-button>
+            <el-button @click="reset"> 重置 </el-button>
             <el-button
               v-if="showCollapse"
               type="primary"
@@ -53,10 +52,11 @@
 </template>
 
 <script setup lang="tsx" name="SearchForm">
-import { computed, watch, onMounted, ref, toRef } from "vue";
+import { computed, ref, toRef } from "vue";
+import { ElMessage } from "element-plus";
 import { ColumnProps } from "../ProTable/interface";
 import { BreakPoint } from "../Grid/interface";
-import { Delete, Search, ArrowDown, ArrowUp } from "@element-plus/icons-vue";
+import { ArrowDown, ArrowUp } from "@element-plus/icons-vue";
 import SearchFormItem from "./components/SearchFormItem.vue";
 import Grid from "../Grid/index.vue";
 import GridItem from "../Grid/components/GridItem.vue";
@@ -89,7 +89,6 @@ const getResponsive = (item: ColumnProps) => {
     xl: item.search?.xl,
   };
 };
-const searchRef = ref();
 
 // 是否默认折叠搜索项
 const collapsed = ref(true);
@@ -99,7 +98,22 @@ const gridRef = ref();
 const breakPoint = computed<BreakPoint>(() => gridRef.value?.breakPoint);
 const formRef = ref();
 
+/**
+ * @description  发起请求
+ * @default
+ * @title
+ */
 const submitSearch = () => {
+  /**
+   * @description  已经发起请求后无须再次发起, 强制同步执行
+   * @default
+   * @title
+   */
+  if (props.loadingVisible) {
+    ElMessage.warning("努力加载中, 请稍后再试...");
+    return false;
+  }
+
   props.search(formRef.value);
 };
 
